@@ -34,26 +34,30 @@ void autonomous() {
 //---------------------------------------------------------------------------------------------------------------------------------------
 //drivePID_distance(Target, Maxspeed, Timeout, Distance from Wall, 0 = Left Sensor/1 = Right Sensor, When To Start Slow Down, chainValue, Error Width, Time Within Error, Min Speed, Trigger Distance, Speed) 
 //
-//            drivePID_distance(1000, 127, 5000, 360, 0, 700, 0, 15, 50, 30, -1, 0);       (12 Parameters)
+//            drivePID_distance(1000, 127, 5000, 360, 0, 700, 0, 15, 50, 30, -1, 0);       (12 Parameters MAX)
+//            drivePID_distance(1000, 127, 5000, 360, 0, 700);                             (6 Parameters REQUIRED)
 //---------------------------------------------------------------------------------------------------------------------------------------
 //turnPID(Target, MaxSpeed, Timeout, Error Width, Time Within Error)
 //
-//            turnPID(90, 127, 5000, 15, 50);     (5 Parameters)
+//            turnPID(90, 127, 5000, 15, 50);     (5 Parameters MAX)
+//            turnPID(90, 127, 5000);             (3 Parameters REQUIRED)
 //---------------------------------------------------------------------------------------------------------------------------------------
 //driveArcL(Target, radius, timeout, max Speed, chainValue, Error Width, Time in Error)
 //
-//            driveArcL(90, 500, 5000, 100, 0, 15, 50)      (7 Parameters)  
-//            driveArcR(90, 500, 5000, 10, 0, 15, 50)      (7 Parameters)
+//            driveArcL(90, 500, 5000, 100, 0, 15, 50)      (7 Parameters MAX)  
+//            driveArcR(90, 500, 5000, 10, 0, 15, 50)       (7 Parameters MAX)
+//            driveArcL(90, 500, 5000)                      (3 Parameters REQUIRED)
 //---------------------------------------------------------------------------------------------------------------------------------------
 //chasSlow(speed, time), for like reseting in goal position
 //
 //            chasSlow(-50, 400);
 //---------------------------------------------------------------------------------------------------------------------------------------
 //Copy and Paste from Here
-//  drivePID(-1000, 50, 3000, 0, 700, 15, 50, 40, -1, 0);
-//  drivePID_distance(-1000, 50, 3000, 400, 0, 700, 0, 15, 50, 40, -1, 0); 
-//  turnPID(90, 50, 3000, 1, 50);
-//  driveArcR(90, 400, 5000, 100, 0, 15, 50);
+//  drivePID(1000, 127, 5000, 0, 700);    
+//  drivePID_distance(1000, 127, 5000, 360, 0, 700);   
+//  turnPID(90, 127, 5000);       
+//  driveArcR(90, 400, 5000);
+//  driveArcL(90, 500, 5000)    
 //---------------------------------------------------------------------------------------------------------------------------------------
 
                       
