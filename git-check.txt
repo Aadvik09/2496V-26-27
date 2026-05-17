@@ -1,0 +1,8 @@
+﻿git : fatal: Needed a single revision
+At line:1 char:73
++ ... ads\2496V-26-27\2496V-main'; git rev-parse --verify HEAD 2>&1 | Out-F ...
++                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (fatal: Needed a single revision:S 
+   tring) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 

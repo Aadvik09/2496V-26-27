@@ -1,0 +1,16 @@
+﻿## No commits yet on 2496v-26-27-import
+?? .gitignore
+?? Makefile
+?? common.mk
+?? firmware/
+?? git-check.txt
+?? git-command-output.txt
+?? git-commit-test.txt
+?? git-gitstatus.txt
+?? git-staged.txt
+?? include/
+?? project.pros
+?? reorder_arcs.py
+?? src/
+?? temp_remote_repo/
+?? transform_pid_funcs.py

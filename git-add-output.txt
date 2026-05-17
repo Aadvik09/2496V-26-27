@@ -1,0 +1,893 @@
+﻿git : warning: in the working copy of '.gitignore', LF will be replaced by 
+CRLF the next time Git touches it
+At C:\Users\Aadvi_y42lhpq\Downloads\2496V-26-27\temp_git_add_verbose.ps1:3 
+char:1
++ git add -Av 2>&1 | Out-File -FilePath .\git-add-output.txt -Encoding  ...
++ ~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (warning: in the... Git touches it 
+   :String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+warning: in the working copy of 'Makefile', LF will be replaced by CRLF the 
+next time Git touches it
+warning: in the working copy of 'common.mk', LF will be replaced by CRLF the 
+next time Git touches it
+warning: in the working copy of 'firmware/squiggles.mk', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 'firmware/v5-common.ld', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 'firmware/v5-hot.ld', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 'firmware/v5.ld', LF will be replaced by CRLF 
+the next time Git touches it
+warning: in the working copy of 'include/api.h', LF will be replaced by CRLF 
+the next time Git touches it
+warning: in the working copy of 'include/auton.h', LF will be replaced by CRLF 
+the next time Git touches it
+warning: in the working copy of 'include/display/README.md', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/licence.txt', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_conf.h', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_conf_checker.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_core/lv_core.mk', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_core/lv_group.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_core/lv_indev.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_core/lv_lang.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_core/lv_obj.h', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_core/lv_refr.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_core/lv_style.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_core/lv_vdb.h', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_draw/lv_draw.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_draw/lv_draw.mk', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_draw/lv_draw_arc.h', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_draw/lv_draw_img.h', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_draw/lv_draw_label.h', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_draw/lv_draw_line.h', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_draw/lv_draw_rbasic.h', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_draw/lv_draw_rect.h', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_draw/lv_draw_triangle.h', 
+LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_draw/lv_draw_vbasic.h', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_fonts/lv_font_builtin.h', 
+LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_fonts/lv_fonts.mk', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_hal/lv_hal.h', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_hal/lv_hal.mk', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_hal/lv_hal_disp.h', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_hal/lv_hal_indev.h', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_hal/lv_hal_tick.h', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_misc/lv_anim.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_misc/lv_area.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_misc/lv_circ.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_misc/lv_color.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_misc/lv_font.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_misc/lv_fs.h', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_misc/lv_gc.h', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_misc/lv_ll.h', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_misc/lv_log.h', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_misc/lv_math.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_misc/lv_mem.h', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_misc/lv_misc.mk', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_misc/lv_symbol_def.h', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_misc/lv_task.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_misc/lv_templ.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_misc/lv_txt.h', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_misc/lv_ufs.h', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_arc.h', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_bar.h', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_btn.h', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_btnm.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_calendar.h', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_canvas.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_cb.h', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_chart.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_cont.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_ddlist.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_gauge.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_img.h', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_imgbtn.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_kb.h', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_label.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_led.h', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_line.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_list.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_lmeter.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_mbox.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_objx.mk', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_objx_templ.h', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_page.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_preload.h', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_roller.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_slider.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_spinbox.h', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_sw.h', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_ta.h', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_table.h', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_tabview.h', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_tileview.h', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_objx/lv_win.h', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_themes/lv_theme.h', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_themes/lv_theme_alien.h', 
+LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/display/lv_themes/lv_theme_default.h', LF will be replaced by CRLF 
+the next time Git touches it
+warning: in the working copy of 
+'include/display/lv_themes/lv_theme_material.h', LF will be replaced by CRLF 
+the next time Git touches it
+warning: in the working copy of 'include/display/lv_themes/lv_theme_mono.h', 
+LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_themes/lv_theme_nemo.h', 
+LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_themes/lv_theme_night.h', 
+LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_themes/lv_theme_templ.h', 
+LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lv_themes/lv_theme_zen.h', LF 
+will be replaced by CRLF the next time Git touches it
+add '.gitignore'
+add 'Makefile'
+add 'common.mk'
+add 'firmware/libc.a'
+add 'firmware/libm.a'
+add 'firmware/libpros.a'
+add 'firmware/okapilib.a'
+add 'firmware/squiggles.mk'
+add 'firmware/v5-common.ld'
+add 'firmware/v5-hot.ld'
+add 'firmware/v5.ld'
+add 'git-add-output.txt'
+add 'git-check.txt'
+add 'git-command-output.txt'
+add 'git-commit-test.txt'
+add 'git-gitstatus.txt'
+add 'git-staged.txt'
+add 'include/api.h'
+add 'include/auton.h'
+add 'include/derrickPID.h'
+add 'include/display/README.md'
+add 'include/display/licence.txt'
+add 'include/display/lv_conf.h'
+add 'include/display/lv_conf_checker.h'
+add 'include/display/lv_core/lv_core.mk'
+add 'include/display/lv_core/lv_group.h'
+add 'include/display/lv_core/lv_indev.h'
+add 'include/display/lv_core/lv_lang.h'
+add 'include/display/lv_core/lv_obj.h'
+add 'include/display/lv_core/lv_refr.h'
+add 'include/display/lv_core/lv_style.h'
+add 'include/display/lv_core/lv_vdb.h'
+add 'include/display/lv_draw/lv_draw.h'
+add 'include/display/lv_draw/lv_draw.mk'
+add 'include/display/lv_draw/lv_draw_arc.h'
+add 'include/display/lv_draw/lv_draw_img.h'
+add 'include/display/lv_draw/lv_draw_label.h'
+add 'include/display/lv_draw/lv_draw_line.h'
+add 'include/display/lv_draw/lv_draw_rbasic.h'
+warning: in the working copy of 'include/display/lv_themes/lv_themes.mk', LF 
+will be replaced by CRLF the next time Git touches it
+add 'include/display/lv_draw/lv_draw_rect.h'
+add 'include/display/lv_draw/lv_draw_triangle.h'
+add 'include/display/lv_draw/lv_draw_vbasic.h'
+add 'include/display/lv_fonts/lv_font_builtin.h'
+add 'include/display/lv_fonts/lv_fonts.mk'
+add 'include/display/lv_hal/lv_hal.h'
+add 'include/display/lv_hal/lv_hal.mk'
+add 'include/display/lv_hal/lv_hal_disp.h'
+add 'include/display/lv_hal/lv_hal_indev.h'
+add 'include/display/lv_hal/lv_hal_tick.h'
+add 'include/display/lv_misc/lv_anim.h'
+add 'include/display/lv_misc/lv_area.h'
+add 'include/display/lv_misc/lv_circ.h'
+add 'include/display/lv_misc/lv_color.h'
+add 'include/display/lv_misc/lv_font.h'
+add 'include/display/lv_misc/lv_fs.h'
+add 'include/display/lv_misc/lv_gc.h'
+add 'include/display/lv_misc/lv_ll.h'
+add 'include/display/lv_misc/lv_log.h'
+add 'include/display/lv_misc/lv_math.h'
+add 'include/display/lv_misc/lv_mem.h'
+add 'include/display/lv_misc/lv_misc.mk'
+add 'include/display/lv_misc/lv_symbol_def.h'
+add 'include/display/lv_misc/lv_task.h'
+add 'include/display/lv_misc/lv_templ.h'
+add 'include/display/lv_misc/lv_txt.h'
+add 'include/display/lv_misc/lv_ufs.h'
+add 'include/display/lv_objx/lv_arc.h'
+add 'include/display/lv_objx/lv_bar.h'
+add 'include/display/lv_objx/lv_btn.h'
+add 'include/display/lv_objx/lv_btnm.h'
+add 'include/display/lv_objx/lv_calendar.h'
+add 'include/display/lv_objx/lv_canvas.h'
+add 'include/display/lv_objx/lv_cb.h'
+add 'include/display/lv_objx/lv_chart.h'
+add 'include/display/lv_objx/lv_cont.h'
+add 'include/display/lv_objx/lv_ddlist.h'
+add 'include/display/lv_objx/lv_gauge.h'
+add 'include/display/lv_objx/lv_img.h'
+add 'include/display/lv_objx/lv_imgbtn.h'
+add 'include/display/lv_objx/lv_kb.h'
+add 'include/display/lv_objx/lv_label.h'
+add 'include/display/lv_objx/lv_led.h'
+add 'include/display/lv_objx/lv_line.h'
+add 'include/display/lv_objx/lv_list.h'
+add 'include/display/lv_objx/lv_lmeter.h'
+add 'include/display/lv_objx/lv_mbox.h'
+add 'include/display/lv_objx/lv_objx.mk'
+add 'include/display/lv_objx/lv_objx_templ.h'
+add 'include/display/lv_objx/lv_page.h'
+add 'include/display/lv_objx/lv_preload.h'
+add 'include/display/lv_objx/lv_roller.h'
+add 'include/display/lv_objx/lv_slider.h'
+add 'include/display/lv_objx/lv_spinbox.h'
+add 'include/display/lv_objx/lv_sw.h'
+add 'include/display/lv_objx/lv_ta.h'
+add 'include/display/lv_objx/lv_table.h'
+add 'include/display/lv_objx/lv_tabview.h'
+add 'include/display/lv_objx/lv_tileview.h'
+add 'include/display/lv_objx/lv_win.h'
+add 'include/display/lv_themes/lv_theme.h'
+add 'include/display/lv_themes/lv_theme_alien.h'
+add 'include/display/lv_themes/lv_theme_default.h'
+add 'include/display/lv_themes/lv_theme_material.h'
+add 'include/display/lv_themes/lv_theme_mono.h'
+add 'include/display/lv_themes/lv_theme_nemo.h'
+add 'include/display/lv_themes/lv_theme_night.h'
+add 'include/display/lv_themes/lv_theme_templ.h'
+warning: in the working copy of 'include/display/lv_version.h', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/display/lvgl.h', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 'include/main.h', LF will be replaced by CRLF 
+the next time Git touches it
+warning: in the working copy of 'include/okapi/api.hpp', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/chassis/controller/chassisController.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/chassis/controller/chassisControllerIntegrated.hpp', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/chassis/controller/chassisControllerPid.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/chassis/controller/chassisScales.hpp', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/chassis/controller/defaultOdomChassisController.hpp', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/chassis/controller/odomChassisController.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/chassis/model/chassisModel.hpp', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/chassis/model/hDriveModel.hpp', LF will be replaced by CRLF 
+the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/chassis/model/readOnlyChassisModel.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/chassis/model/skidSteerModel.hpp', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/chassis/model/threeEncoderSkidSteerModel.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/chassis/model/threeEncoderXDriveModel.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/chassis/model/xDriveModel.hpp', LF will be replaced by CRLF 
+the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/control/async/asyncController.hpp', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/control/async/asyncLinearMotionProfileController.hpp', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/control/async/asyncMotionProfileController.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/control/async/asyncPosIntegratedController.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/control/async/asyncPosPidController.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/control/async/asyncPositionController.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/control/async/asyncVelIntegratedController.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/control/async/asyncVelPidController.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/control/async/asyncVelocityController.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/control/async/asyncWrapper.hpp', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/control/closedLoopController.hpp', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/control/controllerInput.hpp', LF will be replaced by CRLF 
+the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/control/controllerOutput.hpp', LF will be replaced by CRLF 
+the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/control/iterative/iterativeController.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/control/iterative/iterativeMotorVelocityController.hpp', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/control/iterative/iterativePosPidController.hpp', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/control/iterative/iterativePositionController.hpp', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/control/iterative/iterativeVelPidController.hpp', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/control/iterative/iterativeVelocityController.hpp', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/control/offsettableControllerInput.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/control/util/controllerRunner.hpp', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/control/util/flywheelSimulator.hpp', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/control/util/pathfinderUtil.hpp', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/control/util/pidTuner.hpp', 
+LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/control/util/settledUtil.hpp', LF will be replaced by CRLF 
+the next time Git touches it
+warning: in the working copy of 'include/okapi/api/coreProsAPI.hpp', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/device/button/abstractButton.hpp', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/device/button/buttonBase.hpp', LF will be replaced by CRLF 
+the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/device/motor/abstractMotor.hpp', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/device/rotarysensor/continuousRotarySensor.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/device/rotarysensor/rotarySensor.hpp', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/filter/averageFilter.hpp', 
+LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/filter/composableFilter.hpp', LF will be replaced by CRLF 
+the next time Git touches it
+warning: in the working copy of 'include/okapi/api/filter/demaFilter.hpp', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/filter/ekfFilter.hpp', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/filter/emaFilter.hpp', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/filter/filter.hpp', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/filter/filteredControllerInput.hpp', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/filter/medianFilter.hpp', 
+LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/filter/passthroughFilter.hpp', LF will be replaced by CRLF 
+the next time Git touches it
+warning: in the working copy of 'include/okapi/api/filter/velMath.hpp', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/odometry/odomMath.hpp', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/odometry/odomState.hpp', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/odometry/odometry.hpp', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/odometry/point.hpp', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/odometry/stateMode.hpp', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/odometry/threeEncoderOdometry.hpp', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/odometry/twoEncoderOdometry.hpp', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/units/QAcceleration.hpp', 
+LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/units/QAngle.hpp', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/api/units/QAngularAcceleration.hpp', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/units/QAngularJerk.hpp', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/units/QAngularSpeed.hpp', 
+LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/units/QArea.hpp', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/units/QForce.hpp', LF will 
+be replaced by CRLF the next time Git touches it
+add 'include/display/lv_themes/lv_theme_zen.h'
+add 'include/display/lv_themes/lv_themes.mk'
+add 'include/display/lv_version.h'
+add 'include/display/lvgl.h'
+add 'include/main.h'
+add 'include/okapi/api.hpp'
+add 'include/okapi/api/chassis/controller/chassisController.hpp'
+add 'include/okapi/api/chassis/controller/chassisControllerIntegrated.hpp'
+add 'include/okapi/api/chassis/controller/chassisControllerPid.hpp'
+add 'include/okapi/api/chassis/controller/chassisScales.hpp'
+add 'include/okapi/api/chassis/controller/defaultOdomChassisController.hpp'
+add 'include/okapi/api/chassis/controller/odomChassisController.hpp'
+add 'include/okapi/api/chassis/model/chassisModel.hpp'
+add 'include/okapi/api/chassis/model/hDriveModel.hpp'
+add 'include/okapi/api/chassis/model/readOnlyChassisModel.hpp'
+add 'include/okapi/api/chassis/model/skidSteerModel.hpp'
+add 'include/okapi/api/chassis/model/threeEncoderSkidSteerModel.hpp'
+add 'include/okapi/api/chassis/model/threeEncoderXDriveModel.hpp'
+add 'include/okapi/api/chassis/model/xDriveModel.hpp'
+add 'include/okapi/api/control/async/asyncController.hpp'
+add 'include/okapi/api/control/async/asyncLinearMotionProfileController.hpp'
+add 'include/okapi/api/control/async/asyncMotionProfileController.hpp'
+add 'include/okapi/api/control/async/asyncPosIntegratedController.hpp'
+add 'include/okapi/api/control/async/asyncPosPidController.hpp'
+add 'include/okapi/api/control/async/asyncPositionController.hpp'
+add 'include/okapi/api/control/async/asyncVelIntegratedController.hpp'
+add 'include/okapi/api/control/async/asyncVelPidController.hpp'
+add 'include/okapi/api/control/async/asyncVelocityController.hpp'
+add 'include/okapi/api/control/async/asyncWrapper.hpp'
+add 'include/okapi/api/control/closedLoopController.hpp'
+add 'include/okapi/api/control/controllerInput.hpp'
+add 'include/okapi/api/control/controllerOutput.hpp'
+add 'include/okapi/api/control/iterative/iterativeController.hpp'
+add 'include/okapi/api/control/iterative/iterativeMotorVelocityController.hpp'
+add 'include/okapi/api/control/iterative/iterativePosPidController.hpp'
+add 'include/okapi/api/control/iterative/iterativePositionController.hpp'
+add 'include/okapi/api/control/iterative/iterativeVelPidController.hpp'
+add 'include/okapi/api/control/iterative/iterativeVelocityController.hpp'
+add 'include/okapi/api/control/offsettableControllerInput.hpp'
+add 'include/okapi/api/control/util/controllerRunner.hpp'
+add 'include/okapi/api/control/util/flywheelSimulator.hpp'
+add 'include/okapi/api/control/util/pathfinderUtil.hpp'
+add 'include/okapi/api/control/util/pidTuner.hpp'
+add 'include/okapi/api/control/util/settledUtil.hpp'
+add 'include/okapi/api/coreProsAPI.hpp'
+warning: in the working copy of 'include/okapi/api/units/QFrequency.hpp', LF 
+will be replaced by CRLF the next time Git touches it
+add 'include/okapi/api/device/button/abstractButton.hpp'
+add 'include/okapi/api/device/button/buttonBase.hpp'
+add 'include/okapi/api/device/motor/abstractMotor.hpp'
+add 'include/okapi/api/device/rotarysensor/continuousRotarySensor.hpp'
+add 'include/okapi/api/device/rotarysensor/rotarySensor.hpp'
+add 'include/okapi/api/filter/averageFilter.hpp'
+add 'include/okapi/api/filter/composableFilter.hpp'
+add 'include/okapi/api/filter/demaFilter.hpp'
+add 'include/okapi/api/filter/ekfFilter.hpp'
+add 'include/okapi/api/filter/emaFilter.hpp'
+add 'include/okapi/api/filter/filter.hpp'
+add 'include/okapi/api/filter/filteredControllerInput.hpp'
+add 'include/okapi/api/filter/medianFilter.hpp'
+add 'include/okapi/api/filter/passthroughFilter.hpp'
+add 'include/okapi/api/filter/velMath.hpp'
+add 'include/okapi/api/odometry/odomMath.hpp'
+add 'include/okapi/api/odometry/odomState.hpp'
+add 'include/okapi/api/odometry/odometry.hpp'
+add 'include/okapi/api/odometry/point.hpp'
+add 'include/okapi/api/odometry/stateMode.hpp'
+add 'include/okapi/api/odometry/threeEncoderOdometry.hpp'
+add 'include/okapi/api/odometry/twoEncoderOdometry.hpp'
+add 'include/okapi/api/units/QAcceleration.hpp'
+add 'include/okapi/api/units/QAngle.hpp'
+add 'include/okapi/api/units/QAngularAcceleration.hpp'
+add 'include/okapi/api/units/QAngularJerk.hpp'
+add 'include/okapi/api/units/QAngularSpeed.hpp'
+add 'include/okapi/api/units/QArea.hpp'
+warning: in the working copy of 'include/okapi/api/units/QJerk.hpp', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/units/QLength.hpp', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/units/QMass.hpp', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/units/QPressure.hpp', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/units/QSpeed.hpp', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/units/QTime.hpp', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/units/QTorque.hpp', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/units/QVolume.hpp', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/units/RQuantity.hpp', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/units/RQuantityName.hpp', 
+LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/util/abstractRate.hpp', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/util/abstractTimer.hpp', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/util/logging.hpp', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/util/mathUtil.hpp', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/util/supplier.hpp', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/api/util/timeUtil.hpp', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/impl/chassis/controller/chassisControllerBuilder.hpp', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/impl/control/async/asyncMotionProfileControllerBuilder.hpp', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/impl/control/async/asyncPosControllerBuilder.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/impl/control/async/asyncVelControllerBuilder.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/impl/control/iterative/iterativeControllerFactory.hpp', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/impl/control/util/controllerRunnerFactory.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/impl/control/util/pidTunerFactory.hpp', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/impl/device/adiUltrasonic.hpp', 
+LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/impl/device/button/adiButton.hpp', LF will be replaced by CRLF 
+the next time Git touches it
+warning: in the working copy of 
+'include/okapi/impl/device/button/controllerButton.hpp', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/impl/device/controller.hpp', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/impl/device/controllerUtil.hpp', LF will be replaced by CRLF 
+the next time Git touches it
+warning: in the working copy of 
+'include/okapi/impl/device/distanceSensor.hpp', LF will be replaced by CRLF 
+the next time Git touches it
+warning: in the working copy of 
+'include/okapi/impl/device/motor/adiMotor.hpp', LF will be replaced by CRLF 
+the next time Git touches it
+warning: in the working copy of 'include/okapi/impl/device/motor/motor.hpp', 
+LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/impl/device/motor/motorGroup.hpp', LF will be replaced by CRLF 
+the next time Git touches it
+warning: in the working copy of 'include/okapi/impl/device/opticalSensor.hpp', 
+LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/impl/device/rotarysensor/IMU.hpp', LF will be replaced by CRLF 
+the next time Git touches it
+warning: in the working copy of 
+'include/okapi/impl/device/rotarysensor/adiEncoder.hpp', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/impl/device/rotarysensor/adiGyro.hpp', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/impl/device/rotarysensor/integratedEncoder.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/impl/device/rotarysensor/potentiometer.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/impl/device/rotarysensor/rotationSensor.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/impl/filter/velMathFactory.hpp', LF will be replaced by CRLF 
+the next time Git touches it
+warning: in the working copy of 
+'include/okapi/impl/util/configurableTimeUtilFactory.hpp', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/impl/util/rate.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/impl/util/timeUtilFactory.hpp', 
+LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/impl/util/timer.hpp', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/squiggles/constraints.hpp', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/squiggles/geometry/controlvector.hpp', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/squiggles/geometry/pose.hpp', 
+LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/squiggles/geometry/profilepoint.hpp', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/squiggles/io.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/squiggles/math/quinticpolynomial.hpp', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/squiggles/math/utils.hpp', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/squiggles/physicalmodel/passthroughmodel.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/squiggles/physicalmodel/physicalmodel.hpp', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 
+'include/okapi/squiggles/physicalmodel/tankmodel.hpp', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/squiggles/spline.hpp', LF will 
+be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/okapi/squiggles/squiggles.hpp', LF 
+will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/adi.h', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/adi.hpp', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/api_legacy.h', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/apix.h', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/colors.h', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/distance.h', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/distance.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/error.h', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/ext_adi.h', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/gps.h', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/gps.hpp', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/imu.h', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/imu.hpp', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/link.h', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/link.hpp', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/llemu.h', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/llemu.hpp', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/misc.h', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/misc.hpp', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/motors.h', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/motors.hpp', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/optical.h', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/optical.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/rotation.h', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/rotation.hpp', LF will be 
+replaced by CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/rtos.h', LF will be replaced by 
+CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/rtos.hpp', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/screen.h', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/screen.hpp', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/serial.h', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/serial.hpp', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/vision.h', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 'include/pros/vision.hpp', LF will be replaced 
+by CRLF the next time Git touches it
+warning: in the working copy of 'include/robot.h', LF will be replaced by CRLF 
+the next time Git touches it
+warning: in the working copy of 'project.pros', LF will be replaced by CRLF 
+the next time Git touches it
+warning: in the working copy of 'src/main.cpp', LF will be replaced by CRLF 
+the next time Git touches it
+warning: in the working copy of 'src/robot.cpp', LF will be replaced by CRLF 
+the next time Git touches it
+error: 'temp_remote_repo/' does not have a commit checked out
+fatal: adding files failed
+add 'include/okapi/api/units/QForce.hpp'
+add 'include/okapi/api/units/QFrequency.hpp'
+add 'include/okapi/api/units/QJerk.hpp'
+add 'include/okapi/api/units/QLength.hpp'
+add 'include/okapi/api/units/QMass.hpp'
+add 'include/okapi/api/units/QPressure.hpp'
+add 'include/okapi/api/units/QSpeed.hpp'
+add 'include/okapi/api/units/QTime.hpp'
+add 'include/okapi/api/units/QTorque.hpp'
+add 'include/okapi/api/units/QVolume.hpp'
+add 'include/okapi/api/units/RQuantity.hpp'
+add 'include/okapi/api/units/RQuantityName.hpp'
+add 'include/okapi/api/util/abstractRate.hpp'
+add 'include/okapi/api/util/abstractTimer.hpp'
+add 'include/okapi/api/util/logging.hpp'
+add 'include/okapi/api/util/mathUtil.hpp'
+add 'include/okapi/api/util/supplier.hpp'
+add 'include/okapi/api/util/timeUtil.hpp'
+add 'include/okapi/impl/chassis/controller/chassisControllerBuilder.hpp'
+add 'include/okapi/impl/control/async/asyncMotionProfileControllerBuilder.hpp'
+add 'include/okapi/impl/control/async/asyncPosControllerBuilder.hpp'
+add 'include/okapi/impl/control/async/asyncVelControllerBuilder.hpp'
+add 'include/okapi/impl/control/iterative/iterativeControllerFactory.hpp'
+add 'include/okapi/impl/control/util/controllerRunnerFactory.hpp'
+add 'include/okapi/impl/control/util/pidTunerFactory.hpp'
+add 'include/okapi/impl/device/adiUltrasonic.hpp'
+add 'include/okapi/impl/device/button/adiButton.hpp'
+add 'include/okapi/impl/device/button/controllerButton.hpp'
+add 'include/okapi/impl/device/controller.hpp'
+add 'include/okapi/impl/device/controllerUtil.hpp'
+add 'include/okapi/impl/device/distanceSensor.hpp'
+add 'include/okapi/impl/device/motor/adiMotor.hpp'
+add 'include/okapi/impl/device/motor/motor.hpp'
+add 'include/okapi/impl/device/motor/motorGroup.hpp'
+add 'include/okapi/impl/device/opticalSensor.hpp'
+add 'include/okapi/impl/device/rotarysensor/IMU.hpp'
+add 'include/okapi/impl/device/rotarysensor/adiEncoder.hpp'
+add 'include/okapi/impl/device/rotarysensor/adiGyro.hpp'
+add 'include/okapi/impl/device/rotarysensor/integratedEncoder.hpp'
+add 'include/okapi/impl/device/rotarysensor/potentiometer.hpp'
+add 'include/okapi/impl/device/rotarysensor/rotationSensor.hpp'
+add 'include/okapi/impl/filter/velMathFactory.hpp'
+add 'include/okapi/impl/util/configurableTimeUtilFactory.hpp'
+add 'include/okapi/impl/util/rate.hpp'
+add 'include/okapi/impl/util/timeUtilFactory.hpp'
+add 'include/okapi/impl/util/timer.hpp'
+add 'include/okapi/squiggles/constraints.hpp'
+add 'include/okapi/squiggles/geometry/controlvector.hpp'
+add 'include/okapi/squiggles/geometry/pose.hpp'
+add 'include/okapi/squiggles/geometry/profilepoint.hpp'
+add 'include/okapi/squiggles/io.hpp'
+add 'include/okapi/squiggles/math/quinticpolynomial.hpp'
+add 'include/okapi/squiggles/math/utils.hpp'
+add 'include/okapi/squiggles/physicalmodel/passthroughmodel.hpp'
+add 'include/okapi/squiggles/physicalmodel/physicalmodel.hpp'
+add 'include/okapi/squiggles/physicalmodel/tankmodel.hpp'
+add 'include/okapi/squiggles/spline.hpp'
+add 'include/okapi/squiggles/squiggles.hpp'
+add 'include/pros/adi.h'
+add 'include/pros/adi.hpp'
+add 'include/pros/api_legacy.h'
+add 'include/pros/apix.h'
+add 'include/pros/colors.h'
+add 'include/pros/distance.h'
+add 'include/pros/distance.hpp'
+add 'include/pros/error.h'
+add 'include/pros/ext_adi.h'
+add 'include/pros/gps.h'
+add 'include/pros/gps.hpp'
+add 'include/pros/imu.h'
+add 'include/pros/imu.hpp'
+add 'include/pros/link.h'
+add 'include/pros/link.hpp'
+add 'include/pros/llemu.h'
+add 'include/pros/llemu.hpp'
+add 'include/pros/misc.h'
+add 'include/pros/misc.hpp'
+add 'include/pros/motors.h'
+add 'include/pros/motors.hpp'
+add 'include/pros/optical.h'
+add 'include/pros/optical.hpp'
+add 'include/pros/rotation.h'
+add 'include/pros/rotation.hpp'
+add 'include/pros/rtos.h'
+add 'include/pros/rtos.hpp'
+add 'include/pros/screen.h'
+add 'include/pros/screen.hpp'
+add 'include/pros/serial.h'
+add 'include/pros/serial.hpp'
+add 'include/pros/vision.h'
+add 'include/pros/vision.hpp'
+add 'include/robot.h'
+add 'project.pros'
+add 'reorder_arcs.py'
+add 'src/auton.cpp'
+add 'src/derrickPID.cpp'
+add 'src/main.cpp'
+add 'src/robot.cpp'

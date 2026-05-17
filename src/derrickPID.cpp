@@ -1,0 +1,976 @@
+#include "main.h"
+#include "api.h"
+#include "auton.h"
+#include "derrickPID.h"
+#include "pros/misc.h"
+#include "pros/motors.h"
+#include "robot.h"
+
+
+using namespace pros;
+using namespace std;
+
+double universal_target_heading = 0 ;
+
+double driveKP = .2;
+double driveKI = 0;
+double driveKD = 8;
+double driveMAXI = 500;
+
+double HCKP = .55;
+double HCKI = 0.01;
+double HCKD = 3;
+double HCMAXI = 500;
+
+double wallKP = .17;
+double wallKI = 0;
+double wallKD = 3;  
+
+double turnKP = 1.65;
+double turnKI = 0;
+double turnKD = 8;
+double turnMAXI = 500;
+
+double arcKP = 2.1;
+double arcKI = 0;
+double arcKD = .2;
+double arcMAXI = 50;
+
+// ================================
+// DRIVE Constnts
+// ================================
+double driveKP1  = .289;  double driveKI1  = .001;    double driveKD1  = 2; // case 1  < 300
+double driveKP2  = .16;  double driveKI2  = 0;    double driveKD2  = .3; // case 2  < 500
+double driveKP3  = .15;  double driveKI3  = 0;    double driveKD3  = .18; // case 3  < 700
+double driveKP4  = .135;  double driveKI4  = 0;    double driveKD4  = .18; // case 4  < 1000
+double driveKP5  = .133;  double driveKI5  = 0;    double driveKD5  = 0.2;  // case 5  < 1200
+double driveKP6  = 0.131;  double driveKI6  = 0;    double driveKD6  = 0.26;  // case 6  < 1500
+double driveKP7  = 0.125;  double driveKI7  = 0;    double driveKD7  = 0.332;  // case 7  < 2000
+double driveKP8  = 0.119;  double driveKI8  = 0;    double driveKD8  = 0.4;  // case 8  < 2500
+double driveKP9  = 0.113;  double driveKI9  = 0;    double driveKD9  = 0.46;  // case 9  < 3000
+double driveKP10 = 0.107;  double driveKI10 = 0;    double driveKD10 = 0.52;  // case 10 >= 3000
+// ================================
+// TURN constants
+// ================================
+double turnKP1 = 8;  double turnKI1 = 0.005;  double turnKD1 = 13;  // case 1 < 7
+double turnKP2 = 3.7;  double turnKI2 = 0.001;  double turnKD2 = 16;  // case 2 < 15
+double turnKP3 = 3.65;  double turnKI3 = 0.001;  double turnKD3 = 18;  // case 3 < 20
+double turnKP4 = 2.87;  double turnKI4 = 0.001;  double turnKD4 = 16;  // case 4 < 40
+double turnKP5 = 2.7;  double turnKI5 = 0.001;  double turnKD5 = 16.5;  // case 5 < 60
+double turnKP6 = 2.58;  double turnKI6 = 0.001;  double turnKD6 = 17;  // case 6 < 80
+double turnKP7 = 2.49;  double turnKI7 = 0.001;  double turnKD7 = 17;  // case 7 < 100 
+double turnKP8 = 2.39;  double turnKI8 = 0.001;  double turnKD8 = 17;  // case 8 < 120
+double turnKP9 = 2.34;  double turnKI9 = 0.001;  double turnKD9 = 17.7;  // case 9 < 140
+double turnKP10 = 2.34;  double turnKI10 = 0.001;  double turnKD10 = 17.9;  // case 10 < 160
+double turnKP11 = 3;  double turnKI11 = .001;  double turnKD11 = 25;  // case 11 < 190 
+
+
+void chasMove(int left, int right) { //voltage to each chassis motor
+    LF.move(left);
+    LM.move(left);
+    LB.move(left);
+    RF.move(right);
+    RM.move(right);
+    RB.move(right);
+}
+
+void resetEncoders(){
+  LF.tare_position();
+  LM.tare_position();
+  LB.tare_position();
+  RF.tare_position();
+  RM.tare_position();
+  RB.tare_position();
+}
+
+void chasBrake(){
+    LF.brake();
+    LM.brake();
+    LB.brake();
+    RF.brake();
+    RM.brake();
+    RB.brake();
+}
+
+void chasSlow(int speed, int ms) {
+    chasMove(speed, speed);
+    delay(ms);
+    chasBrake();
+}
+
+//old (dont use)
+void LeverScore(){
+    LF.move(-80);
+    LM.move(-80);
+    LB.move(-80);
+    RF.move(-80);
+    RM.move(-80);
+    RB.move(-80);
+    blocker.set_value(false);
+    leverPID(750, 85, 2000, 100, 10, 550, 50);
+    pros::delay(500);
+    blocker.set_value(true);
+    leverPID(-700, 127, 800, 100, 10, 600, 40);
+    Lever.move(-40);
+    pros::delay(300);
+    Lever.move(0);
+}
+
+
+
+
+
+
+
+
+
+
+
+//--------------------------------------------------------------------------------------------
+//CALCPID
+//--------------------------------------------------------------------------------------------
+//pid function, dont touch 
+double calcPID(int error, double kP=HCKP, double kI=HCKI, double kD=HCKD, double totalError=0,
+   double prevError=0, double integralThreshold=30, double maxI=HCMAXI) {
+    
+  // calculate integral
+  if (fabs(error) < integralThreshold)
+  {
+    totalError += error;
+  }
+
+  if (error > 0){
+   if (totalError > maxI){
+     totalError = maxI;
+   }
+   else if(totalError < maxI){
+   }
+  }
+  else{
+   if (totalError > -maxI){
+   }
+   else if(totalError < -maxI){
+     totalError = -maxI;
+   }
+  }
+
+  // calculate derivative
+   float derivative = error - prevError;
+   prevError = error;
+
+
+   // calculate output
+   double speed = (error * kP) + (totalError * kI) + (derivative * kD);
+
+
+  if (speed > 127){
+    speed = 127;
+  }
+  else if (speed < -127){
+    speed = -127;
+  }
+
+  return speed;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+//--------------------------------------------------------------------------------------------
+// DRIVE STRAIGHT
+//--------------------------------------------------------------------------------------------
+void drivePID(int desiredValue, int maxSpeed, int timeout,
+              int chainValue, int dec_point,
+              int errorThreshold, int settleCount,
+              int minSpeed, int triggerDist, int triggerSpeed)
+{
+    bool enableDrivePID = true;
+    double prevError = 0;
+    double totalError = 0;
+    int count = 0;
+    int time = 0;
+
+    double kP = driveKP;
+    double kI = driveKI;
+    double kD = driveKD;
+    double maxI = driveMAXI;
+    int integralThreshold = 150;
+
+    double driveDelta = fabs((double)desiredValue);
+
+     if      (driveDelta < 300)  { kP = driveKP1;  kI = driveKI1;  kD = driveKD1;  }
+        else if (driveDelta < 500)  { kP = driveKP2;  kI = driveKI2;  kD = driveKD2;  }
+        else if (driveDelta < 700)  { kP = driveKP3;  kI = driveKI3;  kD = driveKD3;  }
+        else if (driveDelta < 1000) { kP = driveKP4;  kI = driveKI4;  kD = driveKD4;  }
+        else if (driveDelta < 1200) { kP = driveKP5;  kI = driveKI5;  kD = driveKD5;  }
+        else if (driveDelta < 1500) { kP = driveKP6;  kI = driveKI6;  kD = driveKD6;  }
+        else if (driveDelta < 2000) { kP = driveKP7;  kI = driveKI7;  kD = driveKD7;  }
+        else if (driveDelta < 2500) { kP = driveKP8;  kI = driveKI8;  kD = driveKD8;  }
+        else if (driveDelta < 3000) { kP = driveKP9;  kI = driveKI9;  kD = driveKD9;  }
+        else                        { kP = driveKP10; kI = driveKI10; kD = driveKD10; }
+
+    resetEncoders();
+    con.clear();
+
+     double pidTarget = (chainValue != 0) ? desiredValue + chainValue : desiredValue;
+
+
+    int startTime = pros::millis();
+    double acc = .35; // speed units per ms, higher = faster ramp (TUNE)
+
+    while (enableDrivePID)
+    {
+        if (time > timeout) {
+            enableDrivePID = false;
+        }
+
+        // get position of motors
+        double chassisLeftPos  = (LF.get_position() + LM.get_position() + LB.get_position()) / 3;
+        double chassisRightPos = (RF.get_position() + RM.get_position() + RB.get_position()) / 3;
+
+        // heading logic
+        double currentIMUValue = imu.get_heading();
+        if (currentIMUValue > 180) {
+            currentIMUValue = currentIMUValue - 360;
+        }
+
+        if ((universal_target_heading < 0) && (currentIMUValue > 0)) {
+            if ((currentIMUValue - universal_target_heading) >= 180) {
+                universal_target_heading = universal_target_heading + 360;
+                currentIMUValue = imu.get_heading();
+            }
+        }
+        else if ((universal_target_heading > 0) && (currentIMUValue < 0)) {
+            if ((universal_target_heading - currentIMUValue) >= 180) {
+                currentIMUValue = imu.get_heading();
+            }
+        }
+
+        double headingError = universal_target_heading - currentIMUValue;
+        double headingCorrection = calcPID(headingError);
+
+        // get avg of motors
+        double currentValue = (chassisRightPos + chassisLeftPos) / 2;
+        double currentPos = fabs(currentValue);
+
+        // proportional
+        double error = pidTarget - currentValue;
+
+        if (triggerDist != -1 && fabs(error) <= triggerDist) {
+            Lever.move(triggerSpeed);
+        }
+
+        // derivative
+        double derivative = error - prevError;
+
+        // integral
+        if (fabs(error) < integralThreshold) {
+            totalError += error;
+        }
+
+        if (error > 0) {
+            if (totalError > maxI) {
+                totalError = maxI;
+            }
+        }
+        else {
+            if (totalError < -maxI) {
+                totalError = -maxI;
+            }
+        }
+
+        double speed = (error * kP + derivative * kD + totalError * kI);
+
+        // acceleration ramp
+        double rampedMax = acc * (pros::millis() - startTime);
+        if (rampedMax > maxSpeed) rampedMax = maxSpeed;
+
+        // deceleration
+        if (dec_point != -1 && currentPos > dec_point) {
+            double decMax = maxSpeed - (currentPos - dec_point) / 10.0;
+            if (decMax < minSpeed) decMax = minSpeed;
+            if (rampedMax > decMax) rampedMax = decMax;
+        }
+
+        // clamp speed to rampedMax (handles both accel and decel)
+        if (speed > rampedMax)  speed = rampedMax;
+        if (speed < -rampedMax) speed = -rampedMax;
+
+
+        chasMove(speed + headingCorrection, speed - headingCorrection);
+
+        prevError = error;
+
+        if (chainValue != 0) {
+            // chain mode: exit immediately when real target is reached
+            if (desiredValue > 0 && currentValue >= desiredValue) {
+                enableDrivePID = false;
+            }
+            else if (desiredValue < 0 && currentValue <= desiredValue) {
+                enableDrivePID = false;
+            }
+        }
+        else {
+            // normal mode: settle near target
+            if (fabs(error) < errorThreshold) {
+                count++;
+            } else {
+                count = 0; // reset if it leaves the threshold
+            }
+
+            if (count > settleCount) {
+                enableDrivePID = false;
+            }
+        }
+        
+        if (time % 50 == 0 && time % 100 != 0 && time % 150 != 0){
+            con.print(0, 0, "error: %.2f          ", error);
+        } else if (time % 100 == 0 && time % 150 != 0){
+            con.print(1, 0, "IMU: %.2f          ", imu.get_heading());
+        } else if (time % 150 == 0){
+            con.print(2, 0, "time: %d            ", time);
+        }
+
+        delay(10);
+        time += 10;
+    }
+
+    chasBrake();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+//--------------------------------------------------------------------------------------------
+// DRIVE STRAIGHT USING DISTANCE SENSOR
+//--------------------------------------------------------------------------------------------
+
+void drivePID_distance(int desiredValue, int maxSpeed, int timeout, int wallDistanceTarget, int sensorSide, int dec_point, int chainValue, int errorThreshold, int settleCount, int minSpeed, int triggerDist, int triggerSpeed)
+{
+    bool enableDrivePID = true;
+
+    double prevError = 0;
+    double totalError = 0;
+
+    int count = 0;
+    int time = 0;
+
+    double wallPrevError = 0;
+    double wallTotalError = 0;
+
+    double driveDelta = fabs((double)desiredValue);
+
+    double kP = driveKP;
+    double kI = driveKI;
+    double kD = driveKD;
+    double maxI = driveMAXI;
+    int integralThreshold = 150;
+
+      if      (driveDelta < 300)  { kP = driveKP1;  kI = driveKI1;  kD = driveKD1;  }
+        else if (driveDelta < 500)  { kP = driveKP2;  kI = driveKI2;  kD = driveKD2;  }
+        else if (driveDelta < 700)  { kP = driveKP3;  kI = driveKI3;  kD = driveKD3;  }
+        else if (driveDelta < 1000) { kP = driveKP4;  kI = driveKI4;  kD = driveKD4;  }
+        else if (driveDelta < 1200) { kP = driveKP5;  kI = driveKI5;  kD = driveKD5;  }
+        else if (driveDelta < 1500) { kP = driveKP6;  kI = driveKI6;  kD = driveKD6;  }
+        else if (driveDelta < 2000) { kP = driveKP7;  kI = driveKI7;  kD = driveKD7;  }
+        else if (driveDelta < 2500) { kP = driveKP8;  kI = driveKI8;  kD = driveKD8;  }
+        else if (driveDelta < 3000) { kP = driveKP9;  kI = driveKI9;  kD = driveKD9;  }
+        else                        { kP = driveKP10; kI = driveKI10; kD = driveKD10; }
+    resetEncoders();
+    con.clear();
+
+    double pidTarget = (chainValue != 0) ? desiredValue + chainValue : desiredValue;
+
+    int startTime = pros::millis();
+    double acc = 0.4;
+
+    while (enableDrivePID)
+    {
+        if (time > timeout) {
+            enableDrivePID = false;
+        }
+
+        double chassisLeftPos  = (LF.get_position() + LM.get_position() + LB.get_position()) / 3.0;
+        double chassisRightPos = (RF.get_position() + RM.get_position() + RB.get_position()) / 3.0;
+
+        double currentValue = (chassisRightPos + chassisLeftPos) / 2.0;
+        double pos = fabs(currentValue);
+        double currentPos = pos;
+
+        // heading logic
+        double currentIMUValue = imu.get_heading();
+        if (currentIMUValue > 180) {
+            currentIMUValue = currentIMUValue - 360;
+        }
+
+        if ((universal_target_heading < 0) && (currentIMUValue > 0)) {
+            if ((currentIMUValue - universal_target_heading) >= 180) {
+                universal_target_heading = universal_target_heading + 360;
+                currentIMUValue = imu.get_heading();
+            }
+        }
+        else if ((universal_target_heading > 0) && (currentIMUValue < 0)) {
+            if ((universal_target_heading - currentIMUValue) >= 180) {
+                currentIMUValue = imu.get_heading();
+            }
+        }
+
+        double headingError = universal_target_heading - currentIMUValue;
+        double headingCorrection = calcPID(headingError);
+
+        // =====================
+        // DRIVE PID
+        // =====================
+        double error = pidTarget - currentValue;
+
+        if (triggerDist != -1 && abs(error) <= triggerDist) {
+            blocker.set_value(false);
+            Lever.move(triggerSpeed);
+        }
+        
+        double derivative = error - prevError;
+
+        if (fabs(error) < integralThreshold) {
+            totalError += error;
+        }
+        if (totalError > maxI) totalError = maxI;
+        if (totalError < -maxI) totalError = -maxI;
+
+        double speed = error * kP + derivative * kD + totalError * kI;
+
+        // acceleration ramp
+        double rampedMax = acc * (pros::millis() - startTime);
+        if (rampedMax > maxSpeed) rampedMax = maxSpeed;
+
+        // deceleration
+        if (dec_point != -1 && currentPos > dec_point) {
+            double decMax = maxSpeed - (currentPos - dec_point) / 10.0;
+            if (decMax < minSpeed) decMax = minSpeed;
+            if (rampedMax > decMax) rampedMax = decMax;
+        }
+
+        // clamp speed
+        if (speed > rampedMax)  speed = rampedMax;
+        if (speed < -rampedMax) speed = -rampedMax;
+
+        // =====================
+        // WALL FOLLOWING PID
+        // =====================
+        double wallDistance = (sensorSide == 0) ? distanceSensorL.get() : distanceSensorR.get();
+
+        double wallError = wallDistanceTarget - wallDistance;
+        double wallDerivative = wallError - wallPrevError;
+        wallTotalError += wallError;
+
+        double wallCorrection = wallError * wallKP + wallDerivative * wallKD + wallTotalError * wallKI;
+        if (wallCorrection > 50) wallCorrection = 50;
+        if (wallCorrection < -50) wallCorrection = -50;
+        wallPrevError = wallError;
+
+        // =====================
+        // WALL ENABLE/DISABLE
+        bool wallEnabled = (wallDistanceTarget != -1);
+
+        // =====================
+        // COMBINE CORRECTIONS
+        // =====================
+        double totalCorrection = headingCorrection;
+        if (wallEnabled) {
+            double directedWallCorrection = (desiredValue > 0) ? wallCorrection : -wallCorrection;
+            if (sensorSide == 0) {
+                totalCorrection += directedWallCorrection;
+            } else {
+                totalCorrection -= directedWallCorrection;
+            }
+        }
+
+        chasMove(speed + totalCorrection, speed - totalCorrection);
+
+        prevError = error;
+
+        if (chainValue != 0) {
+            if (desiredValue > 0 && currentValue >= desiredValue) {
+                enableDrivePID = false;
+            }
+            else if (desiredValue < 0 && currentValue <= desiredValue) {
+                enableDrivePID = false;
+            }
+        }
+        else {
+            if (fabs(error) < errorThreshold) {
+                count++;
+            } else {
+                count = 0; // reset if it leaves the threshold
+            }
+            if (count > settleCount) {
+                enableDrivePID = false;
+            }
+        }
+
+        if (time % 50 == 0 && time % 100 != 0 && time % 150 != 0){
+            con.print(0, 0, "error: %.2f          ", error);
+        } else if (time % 100 == 0 && time % 150 != 0){
+            con.print(1, 0, "IMU: %.2f          ", imu.get_heading());
+        } else if (time % 150 == 0){
+            con.print(2, 0, "distance: %d            ", distanceSensorL.get());
+        }
+
+        delay(10);
+        time += 10;
+    }
+
+    chasBrake();
+}
+
+
+
+
+
+
+
+
+
+
+
+
+//--------------------------------------------------------------------------------------------
+// TURNING
+//--------------------------------------------------------------------------------------------
+
+void turnPID(double desiredValue, int topSpeed, int timeout, double errorThreshold, int settleCount, double chainDelta)
+{   
+    bool enableTurnPID = true;
+    double prevError = 0;
+    double totalError = 0;
+    int count = 0;
+    int time = 0;
+
+    double turnDelta = fabs(fmod((desiredValue - imu.get_heading() + 540), 360) - 180);
+
+    double kP = turnKP;
+    double kI = turnKI;
+    double kD = turnKD;
+    double maxI = turnMAXI;
+    int integralThreshold = 30;
+
+
+  if      (turnDelta < 7)   { kP = turnKP1;  kI = turnKI1;  kD = turnKD1; }
+    else if (turnDelta < 15)  { kP = turnKP2;  kI = turnKI2;  kD = turnKD2; }
+    else if (turnDelta < 20)  { kP = turnKP3;  kI = turnKI3;  kD = turnKD3; }
+    else if (turnDelta < 40)  { kP = turnKP4;  kI = turnKI4;  kD = turnKD4; }
+    else if (turnDelta < 60)  { kP = turnKP5;  kI = turnKI5;  kD = turnKD5; }
+    else if (turnDelta < 80)  { kP = turnKP6;  kI = turnKI6;  kD = turnKD6; }
+    else if (turnDelta < 100) { kP = turnKP7;  kI = turnKI7;  kD = turnKD7; }
+    else if (turnDelta < 120) { kP = turnKP8;  kI = turnKI8;  kD = turnKD8; }
+    else if (turnDelta < 140) { kP = turnKP9;  kI = turnKI9;  kD = turnKD9; }
+    else if (turnDelta < 160) { kP = turnKP10; kI = turnKI10; kD = turnKD10; }
+    else if (turnDelta < 190) { kP = turnKP11; kI = turnKI11; kD = turnKD11; }
+
+    con.clear();
+
+    double pidTarget = (chainDelta != 0) ? desiredValue + chainDelta : desiredValue;
+
+    while (enableTurnPID)
+    {
+        if (time > timeout) {
+            enableTurnPID = false;
+        }
+
+        // proportional
+        double error = fmod((pidTarget - imu.get_heading() + 540), 360) - 180;
+
+        // derivative
+        double derivative = error - prevError;
+
+        // integral
+        if (fabs(error) < integralThreshold) {
+            totalError += error;
+        }
+
+        if (error > 0) {
+            if (totalError > maxI) {
+                totalError = maxI;
+            }
+        }
+        else {
+            if (totalError < -maxI) {
+                totalError = -maxI;
+            }
+        }
+
+        double speed = (error * kP + derivative * kD + totalError * kI);
+
+        if (speed > topSpeed) {
+            speed = topSpeed;
+        }
+        else if (speed < -topSpeed) {
+            speed = -topSpeed;
+        }
+
+        // left spins opposite to right for turning
+        chasMove(speed, -speed);
+
+        prevError = error;
+
+
+        if (chainDelta != 0) {
+        // chain mode: exit when real target is reached
+            double realError = fmod((desiredValue - imu.get_heading() + 540), 360) - 180;
+            if (fabs(realError) <= errorThreshold) {
+            enableTurnPID = false;
+            }
+        } else {
+        // normal settle
+            if (fabs(error) < errorThreshold) {
+            count++;
+            } else {
+            count = 0;
+        }
+        if (count > settleCount) {
+        enableTurnPID = false;
+    }
+}
+        
+        if (time % 50 == 0 && time % 100 != 0 && time % 150 != 0){
+            con.print(0, 0, "error: %.2f        ", -error);
+        } else if (time % 100 == 0 && time % 150 != 0){
+            con.print(1, 0, "IMU: %.2f          ", imu.get_heading());
+        } else if (time % 150 == 0){
+            con.print(2, 0, "time: %d            ", time);
+        }
+
+        delay(10);
+        time += 10;
+    }
+
+    chasBrake();
+    universal_target_heading = desiredValue;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//--------------------------------------------------------------------------------------------
+// ARC LEFT
+//--------------------------------------------------------------------------------------------
+
+void driveArcL(double theta, double radius, int timeout, int speed, int chainValue, int errorThreshold, int settleCount)
+{
+    double pi = 3.14159265359;
+
+    double ltarget = (theta / 360.0) * 2 * pi * radius;
+    double rtarget = (theta / 360.0) * 2 * pi * (radius + 528);
+
+    // extend targets if chaining
+    double ltargetPID = (chainValue != 0) ? ltarget + chainValue : ltarget;
+    double rtargetPID = (chainValue != 0) ? rtarget + chainValue : rtarget;
+
+    double speedProp = ltarget / rtarget;
+
+    double kP = arcKP;
+    double kI = arcKI;
+    double kD = arcKD;
+    double maxI = arcMAXI;
+    double arcHeadingKP = .04;
+    int integralThreshold = 150;
+
+    double prevError = 0;
+    double totalError = 0;
+
+    resetEncoders();
+    con.clear();
+
+    double initialHeading = imu.get_heading();
+
+    bool enableArcPID = true;
+    int count = 0;
+    int time = 0;
+
+    while (enableArcPID)
+    {
+        if (time > timeout) enableArcPID = false;
+
+        double encoderAvgL = (LF.get_position() + LM.get_position() + LB.get_position()) / 3.0;
+        double encoderAvgR = (RF.get_position() + RM.get_position() + RB.get_position()) / 3.0;
+
+        double right_error = rtargetPID - encoderAvgR;
+        double left_error  = ltargetPID - encoderAvgL;
+
+        double leftcorrect = (encoderAvgL * 360.0) / (2.0 * pi * (radius + 528));
+
+        double currentIMUValue = imu.get_heading();
+        if (currentIMUValue > 180) currentIMUValue -= 360;
+
+        double expectedHeading = initialHeading - leftcorrect;
+        if (expectedHeading > 180) expectedHeading -= 360;
+
+        if ((expectedHeading < 0) && (currentIMUValue > 0)) {
+            if ((currentIMUValue - expectedHeading) >= 180) {
+                expectedHeading += 360;
+                currentIMUValue = imu.get_heading();
+            }
+        } else if ((expectedHeading > 0) && (currentIMUValue < 0)) {
+            if ((expectedHeading - currentIMUValue) >= 180) {
+                currentIMUValue = imu.get_heading();
+            }
+        }
+
+        double headingError = expectedHeading - currentIMUValue;
+        double headingCorrection = headingError * arcHeadingKP;
+
+        double derivative = right_error - prevError;
+
+        if (fabs(right_error) < integralThreshold) totalError += right_error;
+        if (totalError >  maxI) totalError =  maxI;
+        if (totalError < -maxI) totalError = -maxI;
+
+        double maxVoltage = 127.0 * (speed / 100.0);
+        double speedR = right_error * kP + derivative * kD + totalError * kI;
+        if (speedR >  maxVoltage) speedR =  maxVoltage;
+        if (speedR < -maxVoltage) speedR = -maxVoltage;
+
+        chasMove(speedProp * speedR + headingCorrection,
+                 speedR            - headingCorrection);
+
+        prevError = right_error;
+
+        // exit conditions
+        if (chainValue != 0) {
+            if (encoderAvgR >= rtarget) enableArcPID = false;
+        } else {
+            if ((fabs(left_error) < errorThreshold) && (fabs(right_error) < errorThreshold)) count++;
+            if (count > settleCount) enableArcPID = false;
+        }
+
+        if (time % 50 == 0 && time % 100 != 0 && time % 150 != 0){
+            con.print(0, 0, "error: %.5f    ", right_error);
+        } else if (time % 100 == 0 && time % 150 != 0){
+            con.print(1, 0, "imu: %.3f          ", imu.get_heading());
+        } else if (time % 150 == 0){
+            con.print(2, 0, "time: %d           ", time);
+        
+        }
+        delay(10);
+        time += 10;
+    }
+
+    chasBrake();
+    universal_target_heading -= theta;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//--------------------------------------------------------------------------------------------
+// ARC RIGHT
+//--------------------------------------------------------------------------------------------
+
+void driveArcR(double theta, double radius, int timeout, int speed, int chainValue, int errorThreshold, int settleCount)
+{
+    double pi = 3.14159265359;
+
+    double rtarget = (theta / 360.0) * 2 * pi * radius;
+    double ltarget = (theta / 360.0) * 2 * pi * (radius + 528);
+
+    // extend targets if chaining
+    double ltargetPID = (chainValue != 0) ? ltarget + chainValue : ltarget;
+    double rtargetPID = (chainValue != 0) ? rtarget + chainValue : rtarget;
+
+    double speedProp = rtarget / ltarget;
+
+    double kP = arcKP;
+    double kI = arcKI;
+    double kD = arcKD;
+    double maxI = arcMAXI;
+    double arcHeadingKP = .04;
+    int integralThreshold = 150;
+
+    double prevError = 0;
+    double totalError = 0;
+
+    resetEncoders();
+    con.clear();
+
+    double initialHeading = imu.get_heading();
+
+    bool enableArcPID = true;
+    int count = 0;
+    int time = 0;
+
+    while (enableArcPID)
+    {
+        if (time > timeout) enableArcPID = false;
+
+        double encoderAvgL = (LF.get_position() + LM.get_position() + LB.get_position()) / 3.0;
+        double encoderAvgR = (RF.get_position() + RM.get_position() + RB.get_position()) / 3.0;
+
+        double right_error = rtargetPID - encoderAvgR;
+        double left_error  = ltargetPID - encoderAvgL;
+
+       double rightcorrect = (encoderAvgL * 360.0) / (2.0 * pi * (radius + 528));
+
+        double currentIMUValue = imu.get_heading();
+        if (currentIMUValue > 180) currentIMUValue -= 360;
+
+        double expectedHeading = initialHeading + rightcorrect;
+        if (expectedHeading > 180) expectedHeading -= 360;
+
+        if ((expectedHeading < 0) && (currentIMUValue > 0)) {
+            if ((currentIMUValue - expectedHeading) >= 180) {
+                expectedHeading += 360;
+                currentIMUValue = imu.get_heading();
+            }
+        } else if ((expectedHeading > 0) && (currentIMUValue < 0)) {
+            if ((expectedHeading - currentIMUValue) >= 180) {
+                currentIMUValue = imu.get_heading();
+            }
+        }
+
+        double headingError = expectedHeading - currentIMUValue;
+        double headingCorrection = headingError * arcHeadingKP;
+
+        double derivative = left_error - prevError;
+
+        if (fabs(left_error) < integralThreshold) totalError += left_error;
+        if (totalError >  maxI) totalError =  maxI;
+        if (totalError < -maxI) totalError = -maxI;
+
+        double maxVoltage = 127.0 * (speed / 100.0);
+        double speedL = left_error * kP + derivative * kD + totalError * kI;
+        if (speedL >  maxVoltage) speedL =  maxVoltage;
+        if (speedL < -maxVoltage) speedL = -maxVoltage;
+
+        chasMove(speedL            + headingCorrection,
+                 speedProp * speedL - headingCorrection);
+
+        prevError = left_error;
+
+        // exit conditions
+        if (chainValue != 0) {
+            if (encoderAvgL >= ltarget) enableArcPID = false;
+        } else {
+            if ((fabs(left_error) < errorThreshold) && (fabs(right_error) < errorThreshold)) count++;
+            if (count > settleCount) enableArcPID = false;
+        }
+
+        if (time % 50 == 0 && time % 100 != 0 && time % 150 != 0){
+            con.print(0, 0, "error: %.5f    ", left_error);
+        } else if (time % 100 == 0 && time % 150 != 0){
+            con.print(1, 0, "imu: %.3f          ", imu.get_heading());
+        } else if (time % 150 == 0){
+            con.print(2, 0, "time: %d           ", time);
+        
+        }
+        delay(10);
+        time += 10;
+    }
+
+    chasBrake();
+    universal_target_heading += theta;
+}
+// if speed 30, the right addition is 528. 
+
+
+void leverPID(int desiredValue, int maxSpeed, int timeout, 
+              int errorThreshold, int settleCount, int dec_point, int minSpeed)
+{
+    Lever.tare_position();
+    con.clear();
+    
+    double kP = 2.5;  // tune these
+    double kD = 5.7;
+    
+    double prevError = 0;
+    int count = 0;
+    int time = 0;
+
+    int startTime = pros::millis();
+    double acc = 0.5; // ramp up speed
+
+    while (true) {
+        if (leverSkipToDown) break; 
+        if (time > timeout) break;
+        Lever.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+        double currentPos = Lever.get_position();
+        double error = desiredValue - currentPos;
+        double derivative = error - prevError;
+
+        double speed = error * kP + derivative * kD;
+
+        // acceleration ramp
+        double rampedMax = acc * (pros::millis() - startTime);
+        if (rampedMax > maxSpeed) rampedMax = maxSpeed;
+
+        // deceleration near target
+        double currentAbs = fabs(currentPos);
+        if (dec_point != -1 && currentAbs > dec_point) {
+            double decMax = maxSpeed - (currentAbs - dec_point) / 5.0;
+            if (decMax < minSpeed) decMax = minSpeed;
+            if (rampedMax > decMax) rampedMax = decMax;
+        }
+
+        if (speed >  rampedMax) speed =  rampedMax;
+        if (speed < -rampedMax) speed = -rampedMax;
+
+        Lever.move(speed);
+        prevError = error;
+
+        if (fabs(error) < errorThreshold) count++;
+        else count = 0;
+
+        if (count > settleCount) break;
+
+        
+        // if (time % 50 == 0 && time % 100 != 0 && time % 150 != 0){
+        //     con.print(0, 0, "error: %.5f    ", error);
+        // } else if (time % 100 == 0 && time % 150 != 0){
+        //     con.print(1, 0, "imu: %.3f          ", imu.get_heading());
+        // } else if (time % 150 == 0){
+        //     con.print(2, 0, "time: %d           ", time);
+        
+        // }
+        delay(10);
+        time += 10;
+    }
+
+    Lever.move(0);
+}
+
