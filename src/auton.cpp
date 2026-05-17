@@ -26,6 +26,7 @@ void autonomous() {
 
   //KEY (LOOK HERE IF YOU ARE LOST ON WHAT PARAMETERS MEAN)
   // each function has a bunch of parameters, but only a couple are required. If not specified, will assume default 
+  // for certain turn stuff, the chain value has to be negative or positive depending on the turn
 //---------------------------------------------------------------------------------------------------------------------------------------
 //drivePID(Target, Maxspeed, Timeout, chainValue, When To Start Slow down, Error Width, Time Within Error, Min Speed, Trigger Distance, Speed)
 //
@@ -78,6 +79,7 @@ void autonomous() {
     Lever.move(40);
     pros::delay(700);
     drivePID(1380, 127, 1500, 0, 600, 10, 50, 50, -1, 0);
+    drivePID(-200, 60, 1500, 0, 600, 10, 50, 50, -1, 0);
     blocker.set_value(true);
     intake.move(-127);
     Lever.move(-40);
@@ -98,7 +100,7 @@ void autonomous() {
     // drivePID_distance(-2300, 127, 2000, 150, 1, 1200, -100, 15, 50, 40, -1, 0);
 
     driveArcL(-45, 200, 1500, 40, 50, 15, 50);
-    drivePID(-200, 60, 1500, 0, 600, 10, 50, 50, -1, 0);
+  
     turnPID(30, 75, 1000, 1.6, 30, 0);
     drivePID_distance(-600, 60, 1000, 460, 0, 599, -100, 15, 50, 40, -1, 0);
     LF.move(-80);
