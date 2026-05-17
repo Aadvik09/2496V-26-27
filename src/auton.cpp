@@ -24,7 +24,7 @@ using namespace pros;
 
 void autonomous() {
 
-  //KEY (LOOK HERE IF YOU ARE LOST ON WHAT PARAMETERS MEAN)  
+  //KEY (LOOK HERE IF YOU ARE LOST ON WHAT PARAMETERS MEAN)
 //---------------------------------------------------------------------------------------------------------------------------------------
 //drivePID(Target, Maxspeed, Timeout, chainValue, When To Start Slow down, Error Width, Time Within Error, Min Speed, Trigger Distance, Speed)
 //
