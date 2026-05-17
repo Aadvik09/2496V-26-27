@@ -1,0 +1,10 @@
+﻿git-add-errors.txt
+git-add-exit-output.txt
+git-add-exit.txt
+git-add-output.txt
+git-check.txt
+git-command-output.txt
+git-commit-test.txt
+git-gitstatus.txt
+git-ls-files.txt
+git-staged.txt

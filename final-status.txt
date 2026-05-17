@@ -1,0 +1,13 @@
+﻿## 2496v-26-27-import
+ D git-add-errors.txt
+ D git-add-exit-output.txt
+ D git-add-exit.txt
+ D git-add-output.txt
+ D git-check.txt
+ D git-command-output.txt
+ D git-commit-test.txt
+ D git-gitstatus.txt
+ D git-ls-files.txt
+ D git-staged.txt
+?? final-status.txt
+?? finalize-commit-output.txt

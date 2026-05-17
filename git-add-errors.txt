@@ -1,7 +1,0 @@
-﻿
-    + FullyQualifiedErrorId : NativeCommandError
-warning: in the working copy of 'include/pros/error.h', LF will be replaced by 
-error: 'temp_remote_repo/' does not have a commit checked out
-fatal: adding files failed
-
-
