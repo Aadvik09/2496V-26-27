@@ -119,6 +119,7 @@ bool leverSkipToDown = false;
 void opcontrol() {
   con.clear();
   int time = 0;
+  //define all toggles here
   bool arcToggle = false;
   bool tankToggle = true;
   bool liftToggle = false;

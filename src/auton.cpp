@@ -25,6 +25,7 @@ using namespace pros;
 void autonomous() {
 
   //KEY (LOOK HERE IF YOU ARE LOST ON WHAT PARAMETERS MEAN)
+  // each function has a bunch of parameters, but only a couple are required. If not specified, will assume default 
 //---------------------------------------------------------------------------------------------------------------------------------------
 //drivePID(Target, Maxspeed, Timeout, chainValue, When To Start Slow down, Error Width, Time Within Error, Min Speed, Trigger Distance, Speed)
 //
