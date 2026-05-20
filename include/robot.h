@@ -14,6 +14,8 @@ extern pros::Rotation roto;
 // distance sensors
 extern pros::Distance distanceSensorL;
 extern pros::Distance distanceSensorR;
+extern pros::Distance distanceSensorF;
+extern pros::Distance distanceSensorB;
 
 // chassis motors
 extern pros::Motor LF;
@@ -26,7 +28,7 @@ extern pros::Motor LM;
 
 // intake/mechanism motors
 extern pros::Motor intake;
-extern pros::Motor Lever;
+extern pros::Motor Lift;
 
 // imu
 extern pros::Imu imu;

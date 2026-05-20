@@ -112,9 +112,8 @@ void competition_initialize() {
  */
 
 
-//old, ignore
-bool leverTaskRunning = false;
-bool leverSkipToDown = false;
+//lift task flag
+bool liftTaskRunning = false;
 
 void opcontrol() {
   con.clear();
@@ -123,6 +122,8 @@ void opcontrol() {
   bool arcToggle = false;
   bool tankToggle = true;
   bool liftToggle = false;
+  bool liftPIDToggle = false;
+  int liftUpPos = 750; // change this to the lift motor target position for the toggle button
   bool descoreToggle = false;
   bool blockerToggle = true;
   bool scraperToggle = false;
@@ -152,33 +153,26 @@ void opcontrol() {
       scraperToggle = !scraperToggle;
       scraper.set_value(scraperToggle);
     }
-//lever statement, ignore   
-if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_L2)) {
-    if (!leverTaskRunning) {
-        leverTaskRunning = true;
-        leverSkipToDown = false;
-        pros::Task leverTask([](){
-            blocker.set_value(false);
-            leverPID(750, 120, 1000, 100, 10, 550, 50);
+// liftPID toggle button
+    if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_L2) && !liftTaskRunning) {
+      liftPIDToggle = !liftPIDToggle;
+      int target = liftPIDToggle ? liftUpPos : 0;
+      liftTaskRunning = true;
+      pros::Task liftTask([target](){
+        blocker.set_value(false);
+        liftPID(target, 120, 2000, 550, 100, 10, 50);
 
-            if (!leverSkipToDown) {
-                Lever.move(50);
-                pros::delay(500);
-            }
+        if (target != 0) {
+          Lift.move(50);
+          pros::delay(500);
+        }
 
-            blocker.set_value(true);
-            leverPID(-550, 127, 500, 100, 10, 400, 50);
-            Lever.move(-40);
-            pros::delay(800);
-            Lever.move(0);
-            leverTaskRunning = false;
-            leverSkipToDown = false;
-            pros::Task::current().remove();
-        });
-    } else {
-        leverSkipToDown = true; // this triggers the break in leverPID
+        blocker.set_value(true);
+        Lift.move(0);
+        liftTaskRunning = false;
+        pros::Task::current().remove();
+      });
     }
-}
 
     if (con.get_digital(E_CONTROLLER_DIGITAL_R1)) {//score mode
 			intake.move(127);

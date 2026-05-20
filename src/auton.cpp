@@ -34,9 +34,29 @@ void autonomous() {
 //            drivePID(1000, 127, 5000, 0, 700);                          (5 Parameters REQUIRED)
 //---------------------------------------------------------------------------------------------------------------------------------------
 //drivePID_distance(Target, Maxspeed, Timeout, Distance from Wall, 0 = Left Sensor/1 = Right Sensor, When To Start Slow Down, chainValue, Error Width, Time Within Error, Min Speed, Trigger Distance, Speed) 
+//LEFT AND RIGHT DISTANCE SENSORS, MUST CHANGE PARAMETER
 //
 //            drivePID_distance(1000, 127, 5000, 360, 0, 700, 0, 15, 50, 30, -1, 0);       (12 Parameters MAX)
 //            drivePID_distance(1000, 127, 5000, 360, 0, 700);                             (6 Parameters REQUIRED)
+//---------------------------------------------------------------------------------------------------------------------------------------
+//drivePID_distancefront(Target, Maxspeed, Timeout, Distance from Wall, When To Start Slow Down, chainValue, Error Width, Time Within Error, Min Speed, Trigger Distance, Speed)
+// FRONT DISTANCE SENSOR
+//
+//            drivePID_distancefront(1000, 127, 5000, 360, 700, 0, 15, 50, 30, -1, 0);       (11 Parameters MAX)
+//            drivePID_distancefront(1000, 127, 5000, 360, 700);                             (5 Parameters REQUIRED)
+//---------------------------------------------------------------------------------------------------------------------------------------
+//drivePID_distanceback(Target, Maxspeed, Timeout, Distance from Wall, When To Start Slow Down, chainValue, Error Width, Time Within Error, Min Speed, Trigger Distance, Speed)
+// BACK DISTANCE SENSOR
+//
+//            drivePID_distanceback(1000, 127, 5000, 360, 700, 0, 15, 50, 30, -1, 0);       (11 Parameters MAX)
+//            drivePID_distanceback(1000, 127, 5000, 360, 700);                             (5 Parameters REQUIRED)
+//---------------------------------------------------------------------------------------------------------------------------------------
+//liftPID(Target, MaxSpeed, Timeout, Decel Point, Error Width, Time Within Error, Min Speed)
+// use this for the Lift motor, not the pneumatic lift solenoid.
+// Target is the motor position the lift should move to.
+// If the lift is already at the up position, toggling it will move it back down to 0.
+// Example: liftPID(750, 120, 2000, 550, 100, 10, 50);
+// Default values after Decel Point are: Error Width = 100, Time Within Error = 10, Min Speed = 50.
 //---------------------------------------------------------------------------------------------------------------------------------------
 //turnPID(Target, MaxSpeed, Timeout, Error Width, Time Within Error)
 //
@@ -76,13 +96,13 @@ void autonomous() {
     RM.move(-20);
     RB.move(-20);
     blocker.set_value(false);
-    Lever.move(40);
+    Lift.move(40);
     pros::delay(700);
     drivePID(1380, 127, 1500, 0, 600, 10, 50, 50, -1, 0);
     drivePID(-200, 60, 1500, 0, 600, 10, 50, 50, -1, 0);
     blocker.set_value(true);
     intake.move(-127);
-    Lever.move(-40);
+    Lift.move(-40);
     lift.set_value(true);
     turnPID(210, 75, 1000, 1.6, 30, 0); 
     intake.move(127);
@@ -110,11 +130,11 @@ void autonomous() {
     RM.move(-80);
     RB.move(-80);
     blocker.set_value(false);
-    leverPID(750, 115, 600, 100, 10, 550, 50);
+    liftPID(750, 115, 600, 550, 100, 10, 50);
     pros::delay(100);
-    Lever.move(-65);
+    Lift.move(-65);
     drivePID_distance(1400, 40, 1500, 480, 0, 675, 0, 15, 50, 40, -1, 0);
-    Lever.move(0);
+    Lift.move(0);
     pros::delay(800);
     drivePID_distance(-1350, 75, 1500, 460, 0, 300, -200, 15, 50, 60, -1, 0);
     scraper.set_value(false);
@@ -125,12 +145,12 @@ void autonomous() {
     RM.move(-80);
     RB.move(-80);
     blocker.set_value(false);
-    leverPID(750, 115, 1000, 200, 10, 550, 50);
+    liftPID(750, 115, 1000, 550, 200, 10, 50);
     pros::delay(200);
-    Lever.move(-40);
+    Lift.move(-40);
     blocker.set_value(true);
     drivePID_distance(400, 40, 1000, 460, 0, 200, 50, 15, 50, 30, -1, 0);
-    Lever.move(0);
+    Lift.move(0);
     driveArcR(87, 350, 1500, 30, 50, 15, 50);
     drivePID_distance(2500, 50, 2000, 5, 0, 1200, 0, 15, 50, 40, -1, 0);
     drivePID_distance(-500, 50, 500, 5, 0, 200, 0, 15, 50, 40, -1, 0);
@@ -143,13 +163,13 @@ void autonomous() {
     lift.set_value(false);
     drivePID(-800, 40, 1000, 0, 400, 10, 50, 50, -1, 0);
     blocker.set_value(false);
-    leverPID(750, 25, 1500, 200, 10, 550, 25);
+    liftPID(750, 25, 1500, 550, 200, 10, 25);
     pros::delay(400);
-    Lever.move(-40);
+    Lift.move(-40);
     intake.move(-127);
     drivePID(1380, 127, 1500, 0, 600, 10, 50, 50, -1, 0);
     blocker.set_value(true);
-    Lever.move(-40);
+    Lift.move(-40);
     lift.set_value(true);
     scraper.set_value(true);
     turnPID(30, 75, 1000, 1.6, 30, 0);
@@ -169,16 +189,16 @@ void autonomous() {
     RM.move(-80);
     RB.move(-80);
     blocker.set_value(false);
-    leverPID(750, 115, 600, 100, 10, 550, 50);
+    liftPID(750, 115, 600, 550, 100, 10, 50);
     pros::delay(100);
-    Lever.move(-65);
+    Lift.move(-65);
     drivePID_distance(1400, 40, 1500, 480, 0, 675, 0, 15, 50, 40, -1, 0);
-    Lever.move(0);
+    Lift.move(0);
     pros::delay(800);
     drivePID_distance(-1350, 75, 1500, 460, 0, 300, -200, 15, 50, 60, -1, 0);
     scraper.set_value(false);
     drivePID_distance(400, 40, 1000, 460, 0, 200, 50, 15, 50, 30, -1, 0);
-    Lever.move(0);
+    Lift.move(0);
     driveArcR(87, 350, 1500, 30, 50, 15, 50);
     scraper.set_value(true);
     drivePID_distance(1500, 50, 2000, 5, 0, 1200, 0, 15, 50, 40, -1, 0);
@@ -212,15 +232,15 @@ void autonomous() {
     RM.move(-80);
     RB.move(-80);
     blocker.set_value(false);
-    leverPID(750, 127, 1000, 100, 10, 550, 100);
-    Lever.move(50);
+    liftPID(750, 127, 1000, 550, 100, 10, 100);
+    Lift.move(50);
     pros::delay(100);
     blocker.set_value(true);
-    Lever.move(-65);
+    Lift.move(-65);
     scraper.set_value(true);
     drivePID_distance(1000, 55, 1500, 480, 1, 675, 200, 15, 50, 30, -1, 0);
     chasSlow(20, 500);
-    Lever.move(0);
+    Lift.move(0);
     drivePID_distance(-160, 60, 600, 480, 1, 100, -50, 15, 50, 50, -1, 0);
     turnPID(-105, 75, 700, 1.6, 100, 2); 
     scraper.set_value(false);
@@ -233,16 +253,16 @@ void autonomous() {
     RM.move(-10);
     RB.move(-10);
     blocker.set_value(false);
-    leverPID(750, 60, 1300, 200, 10, 200, 50);
-    Lever.move(-65);
+    liftPID(750, 60, 1300, 200, 200, 10, 50);
+    Lift.move(-65);
     drivePID(1150, 127, 1000, 0, 350, 50, 50, 20, -1, 0);
     pros::delay(100);
     blocker.set_value(true);
-    Lever.move(-50);
+    Lift.move(-50);
     lift.set_value(true);
     turnPID(210, 75, 1000, 4, 10, 0);
     drivePID(-600, 127, 800, -200, 350, 10, 50, 20, -1, 0);
-    Lever.move(0);
+    Lift.move(0);
     turnPID(245, 75, 2000, 1.6, 1000, 0); 
 
     
@@ -274,14 +294,14 @@ void autonomous() {
     RM.move(-80);
     RB.move(-80);
     blocker.set_value(false);
-    leverPID(750, 115, 1000, 100, 10, 550, 80);
-    Lever.move(70);
+    liftPID(750, 115, 1000, 550, 100, 10, 80);
+    Lift.move(70);
     pros::delay(250);
-    Lever.move(-65);
+    Lift.move(-65);
     scraper.set_value(true);
     drivePID_distance(1350, 60, 1600, 470, 0, 675, 0, 15, 50, 30, -1, 0);
     blocker.set_value(true);
-    Lever.move(0);
+    Lift.move(0);
     drivePID_distance(-100, 127, 500, 470, 0, 300, -200, 15, 50, 60, -1, 0); 
     scraper.set_value(false);
     turnPID(289, 75, 1000, 1, 70, 0);
@@ -291,7 +311,7 @@ void autonomous() {
     pros::delay(550);
     drivePID(-1080, 127, 1800, 0, 350, 50, 50, 20, -1, 0);
     turnPID(-30, 75, 1000, 3, 10, 0); 
-    Lever.move(0);
+    Lift.move(0);
     drivePID(770, 127, 800, 200, 350, 10, 50, 20, -1, 0);
     turnPID(-50, 75, 10000, 1.6, 9999, 0); 
     intake.move(0);
@@ -321,7 +341,7 @@ void autonomous() {
     RM.move(-80);
     RB.move(-80);
     blocker.set_value(false);
-    leverPID(750, 115, 600, 100, 10, 550, 50);
+    liftPID(750, 115, 600, 550, 100, 10, 50);
     turnPID(170, 75, 300, 1.6, 30, -3); 
     drivePID(200, 100, 500, 200, 350, 10, 50, 100, -1, 0);
     turnPID(208, 75, 500, 1.6, 30, 3); 
@@ -329,9 +349,9 @@ void autonomous() {
     drivePID(-750, 127, 800, -200, 350, 10, 50, 127, -1, 0);
     turnPID(235, 75, 1000, 1.6, 10, 0); 
     blocker.set_value(true);
-    Lever.move(-65);
+    Lift.move(-65);
     pros::delay(1000);
-    Lever.move(0);
+    Lift.move(0);
     
   } 
 
@@ -355,7 +375,7 @@ void autonomous() {
     RM.move(-80);
     RB.move(-80);
     blocker.set_value(false);
-    leverPID(750, 115, 600, 100, 10, 550, 50);
+    liftPID(750, 115, 600, 550, 100, 10, 50);
     turnPID(103, 75, 300, 1.6, 30, -3); 
     drivePID(180, 100, 500, 200, 350, 10, 50, 100, -1, 0);
     turnPID(143, 75, 500, 1.6, 30, 3); 
@@ -364,9 +384,9 @@ void autonomous() {
     turnPID(173, 75, 1000, 1.6, 10, 0); 
     scraper.set_value(true);
     blocker.set_value(true);
-    Lever.move(-40);
+    Lift.move(-40);
     pros::delay(1500);
-    Lever.move(0);
+    Lift.move(0);
 
 
   } 
@@ -391,13 +411,13 @@ void autonomous() {
     RM.move(-80);
     RB.move(-80);
     blocker.set_value(false);
-    leverPID(750, 127, 600, 100, 10, 550, 100);
+    liftPID(750, 127, 600, 550, 100, 10, 100);
     blocker.set_value(true);
-    Lever.move(-65);
+    Lift.move(-65);
     scraper.set_value(true);
     drivePID_distance(1000, 55, 1500, 480, 1, 675, 200, 15, 50, 30, -1, 0);
     chasSlow(20, 500);
-    Lever.move(0);
+    Lift.move(0);
     drivePID_distance(-160, 60, 600, 480, 1, 100, -50, 15, 50, 50, -1, 0);
     turnPID(-105, 75, 700, 1.6, 100, 2); 
     scraper.set_value(false);
@@ -410,18 +430,18 @@ void autonomous() {
     RM.move(-10);
     RB.move(-10);
     blocker.set_value(false);
-    leverPID(750, 50, 1300, 200, 10, 200, 50);
-    Lever.move(-65);
+    liftPID(750, 50, 1300, 200, 200, 10, 50);
+    Lift.move(-65);
     drivePID(1150, 127, 1000, 0, 350, 50, 50, 20, -1, 0);
     pros::delay(100);
     blocker.set_value(true);
-    Lever.move(-50);
+    Lift.move(-50);
     lift.set_value(true);
     descore.set_value(false);
     turnPID(210, 75, 1000, 4, 10, 0);
     drivePID(-600, 127, 800, -200, 350, 10, 50, 20, -1, 0);
     turnPID(245, 75, 2000, 1.6, 1000, 0); 
-    Lever.move(0);
+    Lift.move(0);
 
 
     
@@ -445,14 +465,14 @@ void autonomous() {
     RM.move(-80);
     RB.move(-80);
     blocker.set_value(false);
-    leverPID(750, 115, 1000, 100, 10, 550, 80);
-    Lever.move(70);
+    liftPID(750, 115, 1000, 550, 100, 10, 80);
+    Lift.move(70);
     pros::delay(250);
-    Lever.move(-65);
+    Lift.move(-65);
     scraper.set_value(true);
     drivePID_distance(1350, 60, 1600, 470, 0, 675, 0, 15, 50, 30, -1, 0);
     blocker.set_value(true);
-    Lever.move(0);
+    Lift.move(0);
     drivePID_distance(-100, 127, 500, 470, 0, 300, -200, 15, 50, 60, -1, 0); 
     scraper.set_value(false);
     turnPID(289, 75, 1000, .5, 70, 0);
@@ -462,16 +482,16 @@ void autonomous() {
     pros::delay(550);
     drivePID(-1080, 127, 1800, 0, 350, 50, 50, 20, -1, 0);
     turnPID(-30, 75, 1000, 3, 10, 0); 
-    Lever.move(0);
+    Lift.move(0);
     drivePID(770, 127, 800, 200, 350, 10, 50, 20, -1, 0);
     turnPID(-50, 75, 10000, 1.6, 9999, 0); 
     intake.move(0);
 
   
     // blocker.set_value(false);
-    // leverPID(750, 115, 600, 100, 10, 550, 50);
+    // liftPID(750, 115, 600, 550, 100, 10, 50);
     // blocker.set_value(true);
-    // Lever.move(-65);
+    // Lift.move(-65);
     // scraper.set_value(true);
     // drivePID_distance(1350, 60, 1900, 600, 0, 675, 0, 15, 50, 30, -1, 0);
     // Lever.move(0);
@@ -517,12 +537,12 @@ void autonomous() {
     RM.move(-80);
     RB.move(-80);
     blocker.set_value(false);
-    leverPID(750, 100, 1000, 100, 10, 550, 50);
+    liftPID(750, 100, 1000, 550, 100, 10, 50);
     pros::delay(100);
-    Lever.move(-65);
+    Lift.move(-65);
     scraper.set_value(true);
     drivePID_distance(1400, 60, 1500, 480, 1, 675, 0, 15, 50, 30, -1, 0);
-    Lever.move(0);
+    Lift.move(0);
     drivePID_distance(-1350, 127, 1000, 480, 1, 300, -200, 15, 50, 60, -1, 0);
     scraper.set_value(false);
     LF.move(-80);
@@ -532,7 +552,7 @@ void autonomous() {
     RM.move(-80);
     RB.move(-80);
     blocker.set_value(false);
-    leverPID(750, 115, 1000, 200, 10, 550, 50);
+    liftPID(750, 115, 1000, 550, 200, 10, 50);
     turnPID(170, 75, 300, 1.6, 30, -3); 
     drivePID(230, 100, 500, 200, 350, 10, 50, 100, -1, 0);
     turnPID(208, 75, 500, 1.6, 30, 3); 
@@ -540,9 +560,9 @@ void autonomous() {
     drivePID(-750, 127, 800, -200, 350, 10, 50, 127, -1, 0);
     turnPID(235, 75, 1000, 1.6, 10, 0);
     blocker.set_value(true);
-    Lever.move(-65);
+    Lift.move(-65);
     pros::delay(1000);
-    Lever.move(0);
+    Lift.move(0);
 
 
   } 
@@ -570,13 +590,13 @@ void autonomous() {
     RM.move(-80);
     RB.move(-80);
     blocker.set_value(false);
-    leverPID(750, 115, 1000, 100, 10, 550, 50);
+    liftPID(750, 115, 1000, 550, 100, 10, 50);
     pros::delay(100);
     blocker.set_value(true);
-    Lever.move(-65);
+    Lift.move(-65);
     scraper.set_value(true);
     drivePID_distance(1350, 60, 1900, 472, 0, 675, 0, 15, 50, 30, -1, 0);
-    Lever.move(0);
+    Lift.move(0);
     drivePID_distance(-1350, 127, 1200, 472, 0, 300, -200, 15, 50, 60, -1, 0);
     scraper.set_value(false); 
     LF.move(-80);
@@ -586,14 +606,14 @@ void autonomous() {
     RM.move(-80);
     RB.move(-80);
     blocker.set_value(false);
-    leverPID(750, 115, 1000, 100, 10, 550, 50);
+    liftPID(750, 115, 1000, 550, 100, 10, 50);
     pros::delay(100);
     blocker.set_value(true);
-    Lever.move(-65);
+    Lift.move(-65);
     turnPID(103, 75, 300, 1.6, 30, -3); 
     drivePID(210, 100, 500, 200, 350, 10, 50, 100, -1, 0);
     turnPID(143, 75, 500, 1.6, 30, 3); 
-    Lever.move(0);
+    Lift.move(0);
     descore.set_value(false);
     drivePID(-750, 127, 800, -200, 350, 10, 50, 127, -1, 0);
     turnPID(173, 75, 1000, 1.6, 10, 0); 
@@ -632,9 +652,9 @@ void autonomous() {
     RM.move(-80);
     RB.move(-80);
     blocker.set_value(false);
-    leverPID(750, 115, 1000, 100, 10, 550, 50);
+    liftPID(750, 115, 1000, 550, 100, 10, 50);
     scraper.set_value(true);
-    Lever.move(-65);
+    Lift.move(-65);
     drivePID_distance(1000, 100, 1000, 440, 0, 599, 0, 15, 50, 40, -1, 0); 
     delay(200);
     drivePID_distance(-600, 127, 500, 440, 0, 599, 0, 15, 50, 65, -1, 0);
@@ -645,7 +665,7 @@ void autonomous() {
     RM.move(-80);
     RB.move(-80);
     blocker.set_value(false);
-    leverPID(750, 85, 600, 100, 10, 550, 50);
+    liftPID(750, 85, 600, 550, 100, 10, 50);
     
   }
 
@@ -672,7 +692,7 @@ void autonomous() {
     RM.move(-80);
     RB.move(-80);
     blocker.set_value(false);
-    leverPID(750, 115, 600, 100, 10, 550, 50);
+    liftPID(750, 115, 600, 550, 100, 10, 50);
     turnPID(170, 75, 300, 1.6, 30, -3); 
     drivePID(230, 100, 500, 200, 350, 10, 50, 100, -1, 0);
     turnPID(208, 75, 500, 1.6, 30, 3); 
@@ -680,9 +700,9 @@ void autonomous() {
     drivePID(-750, 127, 800, -200, 350, 10, 50, 127, -1, 0);
     turnPID(235, 75, 1000, 1.6, 10, 0); 
     blocker.set_value(true);
-    Lever.move(-65);
+    Lift.move(-65);
     pros::delay(1000);
-    Lever.move(0);
+    Lift.move(0);
     
   
     
@@ -712,7 +732,7 @@ void autonomous() {
     RM.move(-80);
     RB.move(-80);
     blocker.set_value(false);
-    leverPID(750, 115, 1000, 100, 10, 550, 50);
+    liftPID(750, 115, 1000, 550, 100, 10, 50);
     turnPID(103, 75, 300, 1.6, 30, -3); 
     drivePID(230, 100, 500, 200, 350, 10, 50, 100, -1, 0);
     turnPID(143, 75, 500, 1.6, 30, 3); 
@@ -720,9 +740,9 @@ void autonomous() {
     drivePID(-750, 127, 800, -200, 350, 10, 50, 127, -1, 0);
     turnPID(173, 75, 1000, 1.6, 10, 0); 
     blocker.set_value(true);
-    Lever.move(-65);
+    Lift.move(-65);
     pros::delay(1000);
-    Lever.move(0);
+    Lift.move(0);
 
     
   }
@@ -748,7 +768,7 @@ void autonomous() {
     RM.move(-80);
     RB.move(-80);
     blocker.set_value(false);
-    leverPID(750, 127, 900, 100, 10, 550, 127);
+    liftPID(750, 127, 900, 550, 100, 10, 127);
     intake.move(-127);
     LF.move(30);
     LM.move(30);
@@ -758,9 +778,9 @@ void autonomous() {
     RB.move(-100);
     pros::delay(200);
     blocker.set_value(true);
-    Lever.move(-60);
+    Lift.move(-60);
     turnPID(10, 75, 600, 1, 30, 0); 
-    Lever.move(0);
+    Lift.move(0);
     intake.move(127);
     driveArcL(10, 1500, 1000, 50, 50, 15, 50);
     descore.set_value(true);
@@ -778,15 +798,15 @@ void autonomous() {
     RM.move(-80);
     RB.move(-80);
     blocker.set_value(false);
-    leverPID(750, 127, 1200, 100, 10, 550, 127);
+    liftPID(750, 127, 1200, 550, 100, 10, 127);
     intake.move(-127);
     blocker.set_value(true);
-    Lever.move(-65);
+    Lift.move(-65);
     scraper.set_value(true);
     intake.move(127);
     drivePID_distance(1000, 55, 1500, 480, 1, 675, 200, 15, 50, 30, -1, 0);
     chasSlow(20, 500);
-    Lever.move(0);
+    Lift.move(0);
     drivePID_distance(-160, 60, 600, 480, 1, 100, -50, 15, 50, 50, -1, 0);
     turnPID(-45, 75, 700, 1.6, 100, 2); 
     scraper.set_value(false);
@@ -799,8 +819,8 @@ void autonomous() {
     RM.move(-10);
     RB.move(-10);
     blocker.set_value(false);
-    leverPID(750, 50, 1300, 200, 10, 200, 50);
-    Lever.move(-65);
+    liftPID(750, 50, 1300, 200, 200, 10, 50);
+    Lift.move(-65);
     
   }
 
@@ -826,15 +846,15 @@ intake.move(127);
     RM.move(-80);
     RB.move(-80);
     blocker.set_value(false);
-    leverPID(750, 115, 1000, 100, 10, 550, 50);
-    Lever.move(50);
+    liftPID(750, 115, 1000, 550, 100, 10, 50);
+    Lift.move(50);
     pros::delay(100);
     blocker.set_value(true);
-    Lever.move(-65);
+    Lift.move(-65);
     scraper.set_value(true);
     drivePID_distance(1350, 50, 1600, 500, 1, 675, 0, 15, 50, 30, -1, 0);
     pros::delay(100);
-    Lever.move(0);
+    Lift.move(0);
     drivePID_distance(-125, 127, 5000, 480, 1, 300, -200, 15, 50, 60, -1, 0);
     scraper.set_value(false);
     lift.set_value(false); 
@@ -848,11 +868,11 @@ intake.move(127);
     RM.move(-10);
     RB.move(-10);
     blocker.set_value(false);
-    leverPID(750, 70, 1000, 200, 10, 550, 50);
+    liftPID(750, 70, 1000, 550, 200, 10, 50);
     drivePID(400, 40, 1000, 0, 100, 50, 50, 20, -1, 0);
     pros::delay(100);
     blocker.set_value(true);
-    Lever.move(-50);
+    Lift.move(-50);
     lift.set_value(true);
     drivePID(-600, 80, 1000, 0, 100, 50, 50, 20, -1, 0);
   }

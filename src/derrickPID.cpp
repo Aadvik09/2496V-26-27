@@ -99,7 +99,7 @@ void chasSlow(int speed, int ms) {
 }
 
 //old (dont use)
-void LeverScore(){
+void LiftScore(){
     LF.move(-80);
     LM.move(-80);
     LB.move(-80);
@@ -107,13 +107,13 @@ void LeverScore(){
     RM.move(-80);
     RB.move(-80);
     blocker.set_value(false);
-    leverPID(750, 85, 2000, 100, 10, 550, 50);
+    liftPID(750, 85, 2000, 550, 100, 10, 50);
     pros::delay(500);
     blocker.set_value(true);
-    leverPID(-700, 127, 800, 100, 10, 600, 40);
-    Lever.move(-40);
+    liftPID(-700, 127, 800, 600, 100, 10, 40);
+    Lift.move(-40);
     pros::delay(300);
-    Lever.move(0);
+    Lift.move(0);
 }
 
 
@@ -266,7 +266,7 @@ void drivePID(int desiredValue, int maxSpeed, int timeout,
         double error = pidTarget - currentValue;
 
         if (triggerDist != -1 && fabs(error) <= triggerDist) {
-            Lever.move(triggerSpeed);
+            Lift.move(triggerSpeed);
         }
 
         // derivative
@@ -442,7 +442,7 @@ void drivePID_distance(int desiredValue, int maxSpeed, int timeout, int wallDist
 
         if (triggerDist != -1 && abs(error) <= triggerDist) {
             blocker.set_value(false);
-            Lever.move(triggerSpeed);
+            Lift.move(triggerSpeed);
         }
         
         double derivative = error - prevError;
@@ -530,6 +530,364 @@ void drivePID_distance(int desiredValue, int maxSpeed, int timeout, int wallDist
             con.print(1, 0, "IMU: %.2f          ", imu.get_heading());
         } else if (time % 150 == 0){
             con.print(2, 0, "distance: %d            ", distanceSensorL.get());
+        }
+
+        delay(10);
+        time += 10;
+    }
+
+    chasBrake();
+}
+
+
+//--------------------------------------------------------------------------------------------
+// DRIVE STRAIGHT USING FRONT DISTANCE SENSOR
+//--------------------------------------------------------------------------------------------
+
+void drivePID_distancefront(int desiredValue, int maxSpeed, int timeout, int wallDistanceTarget, int dec_point, int chainValue, int errorThreshold, int settleCount, int minSpeed, int triggerDist, int triggerSpeed)
+{
+    bool enableDrivePID = true;
+
+    double prevError = 0;
+    double totalError = 0;
+
+    int count = 0;
+    int time = 0;
+
+    double wallPrevError = 0;
+    double wallTotalError = 0;
+
+    double driveDelta = fabs((double)desiredValue);
+
+    double kP = driveKP;
+    double kI = driveKI;
+    double kD = driveKD;
+    double maxI = driveMAXI;
+    int integralThreshold = 150;
+
+      if      (driveDelta < 300)  { kP = driveKP1;  kI = driveKI1;  kD = driveKD1;  }
+        else if (driveDelta < 500)  { kP = driveKP2;  kI = driveKI2;  kD = driveKD2;  }
+        else if (driveDelta < 700)  { kP = driveKP3;  kI = driveKI3;  kD = driveKD3;  }
+        else if (driveDelta < 1000) { kP = driveKP4;  kI = driveKI4;  kD = driveKD4;  }
+        else if (driveDelta < 1200) { kP = driveKP5;  kI = driveKI5;  kD = driveKD5;  }
+        else if (driveDelta < 1500) { kP = driveKP6;  kI = driveKI6;  kD = driveKD6;  }
+        else if (driveDelta < 2000) { kP = driveKP7;  kI = driveKI7;  kD = driveKD7;  }
+        else if (driveDelta < 2500) { kP = driveKP8;  kI = driveKI8;  kD = driveKD8;  }
+        else if (driveDelta < 3000) { kP = driveKP9;  kI = driveKI9;  kD = driveKD9;  }
+        else                        { kP = driveKP10; kI = driveKI10; kD = driveKD10; }
+    resetEncoders();
+    con.clear();
+
+    double pidTarget = (chainValue != 0) ? desiredValue + chainValue : desiredValue;
+
+    int startTime = pros::millis();
+    double acc = 0.4;
+
+    while (enableDrivePID)
+    {
+        if (time > timeout) {
+            enableDrivePID = false;
+        }
+
+        double chassisLeftPos  = (LF.get_position() + LM.get_position() + LB.get_position()) / 3.0;
+        double chassisRightPos = (RF.get_position() + RM.get_position() + RB.get_position()) / 3.0;
+
+        double currentValue = (chassisRightPos + chassisLeftPos) / 2.0;
+        double pos = fabs(currentValue);
+        double currentPos = pos;
+
+        // heading logic
+        double currentIMUValue = imu.get_heading();
+        if (currentIMUValue > 180) {
+            currentIMUValue = currentIMUValue - 360;
+        }
+
+        if ((universal_target_heading < 0) && (currentIMUValue > 0)) {
+            if ((currentIMUValue - universal_target_heading) >= 180) {
+                universal_target_heading = universal_target_heading + 360;
+                currentIMUValue = imu.get_heading();
+            }
+        }
+        else if ((universal_target_heading > 0) && (currentIMUValue < 0)) {
+            if ((universal_target_heading - currentIMUValue) >= 180) {
+                currentIMUValue = imu.get_heading();
+            }
+        }
+
+        double headingError = universal_target_heading - currentIMUValue;
+        double headingCorrection = calcPID(headingError);
+
+        // =====================
+        // DRIVE PID
+        // =====================
+        double error = pidTarget - currentValue;
+
+        if (triggerDist != -1 && abs(error) <= triggerDist) {
+            blocker.set_value(false);
+            Lift.move(triggerSpeed);
+        }
+        
+        double derivative = error - prevError;
+
+        if (fabs(error) < integralThreshold) {
+            totalError += error;
+        }
+        if (totalError > maxI) totalError = maxI;
+        if (totalError < -maxI) totalError = -maxI;
+
+        double speed = error * kP + derivative * kD + totalError * kI;
+
+        // acceleration ramp
+        double rampedMax = acc * (pros::millis() - startTime);
+        if (rampedMax > maxSpeed) rampedMax = maxSpeed;
+
+        // deceleration
+        if (dec_point != -1 && currentPos > dec_point) {
+            double decMax = maxSpeed - (currentPos - dec_point) / 10.0;
+            if (decMax < minSpeed) decMax = minSpeed;
+            if (rampedMax > decMax) rampedMax = decMax;
+        }
+
+        // clamp speed
+        if (speed > rampedMax)  speed = rampedMax;
+        if (speed < -rampedMax) speed = -rampedMax;
+
+        // =====================
+        // WALL FOLLOWING PID (front)
+        // =====================
+        double wallDistance = distanceSensorF.get();
+
+        double wallError = wallDistanceTarget - wallDistance;
+        double wallDerivative = wallError - wallPrevError;
+        wallTotalError += wallError;
+
+        double wallCorrection = wallError * wallKP + wallDerivative * wallKD + wallTotalError * wallKI;
+        if (wallCorrection > 50) wallCorrection = 50;
+        if (wallCorrection < -50) wallCorrection = -50;
+        wallPrevError = wallError;
+
+        // =====================
+        // WALL ENABLE/DISABLE
+        bool wallEnabled = (wallDistanceTarget != -1);
+
+        // =====================
+        // COMBINE CORRECTIONS
+        // =====================
+        double totalCorrection = headingCorrection;
+        if (wallEnabled) {
+            double directedWallCorrection = (desiredValue > 0) ? wallCorrection : -wallCorrection;
+            // front sensor assumed on front side -> always add correction
+            totalCorrection += directedWallCorrection;
+        }
+
+        chasMove(speed + totalCorrection, speed - totalCorrection);
+
+        prevError = error;
+
+        if (chainValue != 0) {
+            if (desiredValue > 0 && currentValue >= desiredValue) {
+                enableDrivePID = false;
+            }
+            else if (desiredValue < 0 && currentValue <= desiredValue) {
+                enableDrivePID = false;
+            }
+        }
+        else {
+            if (fabs(error) < errorThreshold) {
+                count++;
+            } else {
+                count = 0; // reset if it leaves the threshold
+            }
+            if (count > settleCount) {
+                enableDrivePID = false;
+            }
+        }
+
+        if (time % 50 == 0 && time % 100 != 0 && time % 150 != 0){
+            con.print(0, 0, "error: %.2f          ", error);
+        } else if (time % 100 == 0 && time % 150 != 0){
+            con.print(1, 0, "IMU: %.2f          ", imu.get_heading());
+        } else if (time % 150 == 0){
+            con.print(2, 0, "distance: %d            ", (int)distanceSensorF.get());
+        }
+
+        delay(10);
+        time += 10;
+    }
+
+    chasBrake();
+}
+
+
+//--------------------------------------------------------------------------------------------
+// DRIVE STRAIGHT USING BACK DISTANCE SENSOR
+//--------------------------------------------------------------------------------------------
+
+void drivePID_distanceback(int desiredValue, int maxSpeed, int timeout, int wallDistanceTarget, int dec_point, int chainValue, int errorThreshold, int settleCount, int minSpeed, int triggerDist, int triggerSpeed)
+{
+    bool enableDrivePID = true;
+
+    double prevError = 0;
+    double totalError = 0;
+
+    int count = 0;
+    int time = 0;
+
+    double wallPrevError = 0;
+    double wallTotalError = 0;
+
+    double driveDelta = fabs((double)desiredValue);
+
+    double kP = driveKP;
+    double kI = driveKI;
+    double kD = driveKD;
+    double maxI = driveMAXI;
+    int integralThreshold = 150;
+
+      if      (driveDelta < 300)  { kP = driveKP1;  kI = driveKI1;  kD = driveKD1;  }
+        else if (driveDelta < 500)  { kP = driveKP2;  kI = driveKI2;  kD = driveKD2;  }
+        else if (driveDelta < 700)  { kP = driveKP3;  kI = driveKI3;  kD = driveKD3;  }
+        else if (driveDelta < 1000) { kP = driveKP4;  kI = driveKI4;  kD = driveKD4;  }
+        else if (driveDelta < 1200) { kP = driveKP5;  kI = driveKI5;  kD = driveKD5;  }
+        else if (driveDelta < 1500) { kP = driveKP6;  kI = driveKI6;  kD = driveKD6;  }
+        else if (driveDelta < 2000) { kP = driveKP7;  kI = driveKI7;  kD = driveKD7;  }
+        else if (driveDelta < 2500) { kP = driveKP8;  kI = driveKI8;  kD = driveKD8;  }
+        else if (driveDelta < 3000) { kP = driveKP9;  kI = driveKI9;  kD = driveKD9;  }
+        else                        { kP = driveKP10; kI = driveKI10; kD = driveKD10; }
+    resetEncoders();
+    con.clear();
+
+    double pidTarget = (chainValue != 0) ? desiredValue + chainValue : desiredValue;
+
+    int startTime = pros::millis();
+    double acc = 0.4;
+
+    while (enableDrivePID)
+    {
+        if (time > timeout) {
+            enableDrivePID = false;
+        }
+
+        double chassisLeftPos  = (LF.get_position() + LM.get_position() + LB.get_position()) / 3.0;
+        double chassisRightPos = (RF.get_position() + RM.get_position() + RB.get_position()) / 3.0;
+
+        double currentValue = (chassisRightPos + chassisLeftPos) / 2.0;
+        double pos = fabs(currentValue);
+        double currentPos = pos;
+
+        // heading logic
+        double currentIMUValue = imu.get_heading();
+        if (currentIMUValue > 180) {
+            currentIMUValue = currentIMUValue - 360;
+        }
+
+        if ((universal_target_heading < 0) && (currentIMUValue > 0)) {
+            if ((currentIMUValue - universal_target_heading) >= 180) {
+                universal_target_heading = universal_target_heading + 360;
+                currentIMUValue = imu.get_heading();
+            }
+        }
+        else if ((universal_target_heading > 0) && (currentIMUValue < 0)) {
+            if ((universal_target_heading - currentIMUValue) >= 180) {
+                currentIMUValue = imu.get_heading();
+            }
+        }
+
+        double headingError = universal_target_heading - currentIMUValue;
+        double headingCorrection = calcPID(headingError);
+
+        // =====================
+        // DRIVE PID
+        // =====================
+        double error = pidTarget - currentValue;
+
+        if (triggerDist != -1 && abs(error) <= triggerDist) {
+            blocker.set_value(false);
+            Lift.move(triggerSpeed);
+        }
+        
+        double derivative = error - prevError;
+
+        if (fabs(error) < integralThreshold) {
+            totalError += error;
+        }
+        if (totalError > maxI) totalError = maxI;
+        if (totalError < -maxI) totalError = -maxI;
+
+        double speed = error * kP + derivative * kD + totalError * kI;
+
+        // acceleration ramp
+        double rampedMax = acc * (pros::millis() - startTime);
+        if (rampedMax > maxSpeed) rampedMax = maxSpeed;
+
+        // deceleration
+        if (dec_point != -1 && currentPos > dec_point) {
+            double decMax = maxSpeed - (currentPos - dec_point) / 10.0;
+            if (decMax < minSpeed) decMax = minSpeed;
+            if (rampedMax > decMax) rampedMax = decMax;
+        }
+
+        // clamp speed
+        if (speed > rampedMax)  speed = rampedMax;
+        if (speed < -rampedMax) speed = -rampedMax;
+
+        // =====================
+        // WALL FOLLOWING PID (back)
+        // =====================
+        double wallDistance = distanceSensorB.get();
+
+        double wallError = wallDistanceTarget - wallDistance;
+        double wallDerivative = wallError - wallPrevError;
+        wallTotalError += wallError;
+
+        double wallCorrection = wallError * wallKP + wallDerivative * wallKD + wallTotalError * wallKI;
+        if (wallCorrection > 50) wallCorrection = 50;
+        if (wallCorrection < -50) wallCorrection = -50;
+        wallPrevError = wallError;
+
+        // =====================
+        // WALL ENABLE/DISABLE
+        bool wallEnabled = (wallDistanceTarget != -1);
+
+        // =====================
+        // COMBINE CORRECTIONS
+        // =====================
+        double totalCorrection = headingCorrection;
+        if (wallEnabled) {
+            double directedWallCorrection = (desiredValue > 0) ? wallCorrection : -wallCorrection;
+            // back sensor assumed on back side -> subtract correction
+            totalCorrection -= directedWallCorrection;
+        }
+
+        chasMove(speed + totalCorrection, speed - totalCorrection);
+
+        prevError = error;
+
+        if (chainValue != 0) {
+            if (desiredValue > 0 && currentValue >= desiredValue) {
+                enableDrivePID = false;
+            }
+            else if (desiredValue < 0 && currentValue <= desiredValue) {
+                enableDrivePID = false;
+            }
+        }
+        else {
+            if (fabs(error) < errorThreshold) {
+                count++;
+            } else {
+                count = 0; // reset if it leaves the threshold
+            }
+            if (count > settleCount) {
+                enableDrivePID = false;
+            }
+        }
+
+        if (time % 50 == 0 && time % 100 != 0 && time % 150 != 0){
+            con.print(0, 0, "error: %.2f          ", error);
+        } else if (time % 100 == 0 && time % 150 != 0){
+            con.print(1, 0, "IMU: %.2f          ", imu.get_heading());
+        } else if (time % 150 == 0){
+            con.print(2, 0, "distance: %d            ", (int)distanceSensorB.get());
         }
 
         delay(10);
@@ -909,10 +1267,10 @@ void driveArcR(double theta, double radius, int timeout, int speed, int chainVal
 // if speed 30, the right addition is 528. 
 
 
-void leverPID(int desiredValue, int maxSpeed, int timeout, 
-              int errorThreshold, int settleCount, int dec_point, int minSpeed)
+void liftPID(int desiredValue, int maxSpeed, int timeout, 
+              int dec_point, int errorThreshold, int settleCount, int minSpeed)
 {
-    Lever.tare_position();
+    Lift.tare_position();
     con.clear();
     
     double kP = 2.5;  // tune these
@@ -926,10 +1284,9 @@ void leverPID(int desiredValue, int maxSpeed, int timeout,
     double acc = 0.5; // ramp up speed
 
     while (true) {
-        if (leverSkipToDown) break; 
         if (time > timeout) break;
-        Lever.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-        double currentPos = Lever.get_position();
+        Lift.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+        double currentPos = Lift.get_position();
         double error = desiredValue - currentPos;
         double derivative = error - prevError;
 
@@ -950,7 +1307,7 @@ void leverPID(int desiredValue, int maxSpeed, int timeout,
         if (speed >  rampedMax) speed =  rampedMax;
         if (speed < -rampedMax) speed = -rampedMax;
 
-        Lever.move(speed);
+        Lift.move(speed);
         prevError = error;
 
         if (fabs(error) < errorThreshold) count++;
@@ -958,19 +1315,10 @@ void leverPID(int desiredValue, int maxSpeed, int timeout,
 
         if (count > settleCount) break;
 
-        
-        // if (time % 50 == 0 && time % 100 != 0 && time % 150 != 0){
-        //     con.print(0, 0, "error: %.5f    ", error);
-        // } else if (time % 100 == 0 && time % 150 != 0){
-        //     con.print(1, 0, "imu: %.3f          ", imu.get_heading());
-        // } else if (time % 150 == 0){
-        //     con.print(2, 0, "time: %d           ", time);
-        
-        // }
         delay(10);
         time += 10;
     }
 
-    Lever.move(0);
+    Lift.move(0);
 }
 

@@ -16,11 +16,17 @@
 #define ROTO_PORT 3
 #define Distance_PORTL 2
 #define Distance_PORTR 11
+// Front/back distance sensor ports (set to unused ports by default)
+#define Distance_PORTF 4
+#define Distance_PORTB 5
 
 // rotation sensors
 pros::Rotation roto(ROTO_PORT);
 pros::Distance distanceSensorL(Distance_PORTL);
 pros::Distance distanceSensorR(Distance_PORTR);
+// optional front/back sensors (default to same ports as left/right until hardware configured)
+pros::Distance distanceSensorF(Distance_PORTF);
+pros::Distance distanceSensorB(Distance_PORTB);
 
 // chassis motors
 pros::Motor LF(LF_PORT, pros::E_MOTOR_GEARSET_06, true);
@@ -31,7 +37,7 @@ pros::Motor RM(RM_PORT, pros::E_MOTOR_GEARSET_06, false);
 pros::Motor RB(RB_PORT, pros::E_MOTOR_GEARSET_06, false);
 
 // intake motors
-pros::Motor Lever(Lever_PORT, pros::E_MOTOR_GEARSET_06, true);
+pros::Motor Lift(Lever_PORT, pros::E_MOTOR_GEARSET_06, true);
 pros::Motor intake(intake_PORT, pros::E_MOTOR_GEARSET_06, false);
 
 // pneumatics
