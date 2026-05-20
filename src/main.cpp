@@ -73,7 +73,7 @@ int atn = 3;
 string autstr;
 
 
- //auto selector (doesnt work on brain screen yet)
+ // fix this, make this work on the brain screen like ez template
 void competition_initialize() {
    if (atn == 0)      { autstr = "skills";       con.print(0, 0, "Aut 0: %s", autstr); }
     else if (atn == 1) { autstr = "6+3 left";     con.print(0, 0, "Aut 1: %s", autstr); }
