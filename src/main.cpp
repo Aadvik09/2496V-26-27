@@ -68,7 +68,7 @@ void disabled() {}
 
 //--------------------------------------------------------------------------------------------------------------------------------------
 //SELECT AUTON HERE
-int atn = 3;
+int atn = 0;
 //--------------------------------------------------------------------------------------------------------------------------------------
 string autstr;
 
@@ -152,10 +152,8 @@ void opcontrol() {
   int liftUpPos = 750; // change this to the lift motor target position for the toggle button
 
   LF.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-  LM.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
   LB.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
   RF.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
-  RM.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
   RB.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
 
   configure_lift_brake_mode();
@@ -180,41 +178,21 @@ void opcontrol() {
     }
     // Use the existing lift PID as a target-based controller.
     // Any manual lift input turns the PID off immediately.
-    if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_LEFT)) {
-      startLiftPID(0);
-    }
-    else if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_RIGHT)) {
-      startLiftPID(270);
-    }
-    else if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_DOWN)) {
-      startLiftPID(290);
-    }
 
-    bool manualLiftPressed = con.get_digital(E_CONTROLLER_DIGITAL_R1) || con.get_digital(E_CONTROLLER_DIGITAL_R2);
-    if (manualLiftPressed) {
-      stopLiftPID();
-      if (con.get_digital(E_CONTROLLER_DIGITAL_R1)) {
-        Lift.move(127);
-      } else {
-        Lift.move(-127);
-      }
-    } else if (!liftPIDActive) {
-      Lift.move(0);
-    }
 
     //intake controls 
-    if (con.get_digital(E_CONTROLLER_DIGITAL_L1)) {//score mode
-			intake.move(127);
+    if (con.get_digital(E_CONTROLLER_DIGITAL_R1)) {//score mode
+			lift.move(127);
       //intake.tare_position();
 
 		} 
-    else if(con.get_digital(E_CONTROLLER_DIGITAL_L2)){//store mode
-      intake.move(-127);
+    else if(con.get_digital(E_CONTROLLER_DIGITAL_R2)){//store mode
+      lift.move(-127);
       //intake.tare_position();
     }
 
     else {
-      intake.move(0);
+      lift.move(0);
     }
 
 
@@ -253,18 +231,14 @@ void opcontrol() {
       // RM.move(int(abs(con.get_analog(ANALOG_RIGHT_Y)) * con.get_analog(ANALOG_RIGHT_Y) / 127));
       // RB.move(int(abs(con.get_analog(ANALOG_RIGHT_Y)) * con.get_analog(ANALOG_RIGHT_Y) / 127));
       LF.move(con.get_analog(ANALOG_LEFT_Y));
-      LM.move(con.get_analog(ANALOG_LEFT_Y));
       LB.move(con.get_analog(ANALOG_LEFT_Y));
       RF.move(con.get_analog(ANALOG_RIGHT_Y));
-      RM.move(con.get_analog(ANALOG_RIGHT_Y));
       RB.move(con.get_analog(ANALOG_RIGHT_Y));
     }
     if (arcToggle) {
       LF.move(left);
-      LM.move(left);
       LB.move(left);
       RF.move(right);
-      RM.move(right);
       RB.move(right);
     }
 
@@ -292,7 +266,7 @@ void opcontrol() {
 
 
 
-    double chasstempC = ((RF.get_temperature() + RB.get_temperature() + RM.get_temperature() + LF.get_temperature() + LB.get_temperature() + LM.get_temperature()) / 6);
+    double chasstempC = ((RF.get_temperature() + RB.get_temperature() + LF.get_temperature() + LB.get_temperature()) / 4);
     double intaketempc = intake.get_temperature();
 
       if (time % 101 == 0) {

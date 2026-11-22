@@ -4,6 +4,7 @@
 #include "derrickPID.h"
 #include "pros/misc.h"
 #include "pros/motors.h"
+#include <cmath>
 #include "robot.h"
 
 
@@ -12,12 +13,12 @@ using namespace std;
 
 double universal_target_heading = 0 ;
 
-double driveKP = .2;
+double driveKP = .08;
 double driveKI = 0;
 double driveKD = 8;
 double driveMAXI = 500;
 
-double HCKP = .55;
+double HCKP = .65;
 double HCKI = 0.01;
 double HCKD = 3;
 double HCMAXI = 500;
@@ -25,15 +26,16 @@ double HCMAXI = 500;
 double wallKP = .17;
 double wallKI = 0;
 double wallKD = 3;  
+double wallFollowKP = 0.6;
 
 double turnKP = 1.65;
 double turnKI = 0;
 double turnKD = 8;
 double turnMAXI = 500;
 
-double arcKP = 2.1;
+double arcKP = 3.8;
 double arcKI = 0;
-double arcKD = .2;
+double arcKD = .3;
 double arcMAXI = 50;
 
 // ================================
@@ -43,7 +45,7 @@ double driveKP1  = .289;  double driveKI1  = .001;    double driveKD1  = 2; // c
 double driveKP2  = .16;  double driveKI2  = 0;    double driveKD2  = .3; // case 2  < 500
 double driveKP3  = .15;  double driveKI3  = 0;    double driveKD3  = .18; // case 3  < 700
 double driveKP4  = .135;  double driveKI4  = 0;    double driveKD4  = .18; // case 4  < 1000
-double driveKP5  = .133;  double driveKI5  = 0;    double driveKD5  = 0.2;  // case 5  < 1200
+double driveKP5  = .1;  double driveKI5  = 0;    double driveKD5  = 0.2;  // case 5  < 1200
 double driveKP6  = 0.131;  double driveKI6  = 0;    double driveKD6  = 0.26;  // case 6  < 1500
 double driveKP7  = 0.125;  double driveKI7  = 0;    double driveKD7  = 0.332;  // case 7  < 2000
 double driveKP8  = 0.119;  double driveKI8  = 0;    double driveKD8  = 0.4;  // case 8  < 2500
@@ -67,28 +69,26 @@ double turnKP11 = 3;  double turnKI11 = .001;  double turnKD11 = 25;  // case 11
 
 void chasMove(int left, int right) { //voltage to each chassis motor
     LF.move(left);
-    LM.move(left);
     LB.move(left);
     RF.move(right);
-    RM.move(right);
     RB.move(right);
 }
 
 void resetEncoders(){
   LF.tare_position();
-  LM.tare_position();
   LB.tare_position();
   RF.tare_position();
-  RM.tare_position();
   RB.tare_position();
 }
 
 void chasBrake(){
+    LF.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+    LB.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+    RF.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+    RB.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
     LF.brake();
-    LM.brake();
     LB.brake();
     RF.brake();
-    RM.brake();
     RB.brake();
 }
 
@@ -218,8 +218,8 @@ void drivePID(int desiredValue, int maxSpeed, int timeout,
         }
 
         // get position of motors
-        double chassisLeftPos  = (LF.get_position() + LM.get_position() + LB.get_position()) / 3;
-        double chassisRightPos = (RF.get_position() + RM.get_position() + RB.get_position()) / 3;
+        double chassisLeftPos  = (LF.get_position() + LB.get_position()) / 2;
+        double chassisRightPos = (RF.get_position() + RB.get_position()) / 2;
 
         // heading logic
         double currentIMUValue = imu.get_heading();
@@ -356,8 +356,8 @@ void drivePID_distance(int desiredValue, int maxSpeed, int timeout, int wallDist
     int count = 0;
     int time = 0;
 
-    double wallPrevError = 0;
-    double wallTotalError = 0;
+    double headingPrevError = 0;
+    double headingTotalError = 0;
 
     double driveDelta = fabs((double)desiredValue);
 
@@ -388,42 +388,80 @@ void drivePID_distance(int desiredValue, int maxSpeed, int timeout, int wallDist
     while (enableDrivePID)
     {
         if (time > timeout) {
-            enableDrivePID = false;
+            break;
         }
 
-        double chassisLeftPos  = (LF.get_position() + LM.get_position() + LB.get_position()) / 3.0;
-        double chassisRightPos = (RF.get_position() + RM.get_position() + RB.get_position()) / 3.0;
+        double lfPosition = LF.get_position();
+        double lbPosition = LB.get_position();
+        double rfPosition = RF.get_position();
+        double rbPosition = RB.get_position();
+        if (!std::isfinite(lfPosition) || !std::isfinite(lbPosition) ||
+            !std::isfinite(rfPosition) || !std::isfinite(rbPosition)) {
+            chasBrake();
+            con.clear();
+            con.print(0, 0, "DRIVE ENCODER ERROR");
+            con.print(1, 0, "Check motor ports");
+            con.print(2, 0, "LF:%s LB:%s RF:%s RB:%s",
+                      std::isfinite(lfPosition) ? "OK" : "ERR",
+                      std::isfinite(lbPosition) ? "OK" : "ERR",
+                      std::isfinite(rfPosition) ? "OK" : "ERR",
+                      std::isfinite(rbPosition) ? "OK" : "ERR");
+            return;
+        }
+
+        double chassisLeftPos  = (lfPosition + lbPosition) / 2.0;
+        double chassisRightPos = (rfPosition + rbPosition) / 2.0;
 
         double currentValue = (chassisRightPos + chassisLeftPos) / 2.0;
         double pos = fabs(currentValue);
         double currentPos = pos;
+        double error = pidTarget - currentValue;
+
+        if (wallDistanceTarget != -1) {
+            bool travelTargetReached = chainValue != 0
+                                           ? (desiredValue > 0
+                                                  ? currentValue >= desiredValue
+                                                  : currentValue <= desiredValue)
+                                           : fabs(error) < errorThreshold;
+            if (travelTargetReached) {
+                break;
+            }
+        }
 
         // heading logic
         double currentIMUValue = imu.get_heading();
+        if (!std::isfinite(currentIMUValue)) {
+            chasBrake();
+            con.clear();
+            con.print(0, 0, "IMU SENSOR ERROR");
+            con.print(1, 0, "Check IMU connection");
+            return;
+        }
         if (currentIMUValue > 180) {
             currentIMUValue = currentIMUValue - 360;
         }
-
-        if ((universal_target_heading < 0) && (currentIMUValue > 0)) {
-            if ((currentIMUValue - universal_target_heading) >= 180) {
-                universal_target_heading = universal_target_heading + 360;
-                currentIMUValue = imu.get_heading();
-            }
-        }
-        else if ((universal_target_heading > 0) && (currentIMUValue < 0)) {
-            if ((universal_target_heading - currentIMUValue) >= 180) {
-                currentIMUValue = imu.get_heading();
-            }
+        double targetHeading = universal_target_heading;
+        if (targetHeading > 180) {
+            targetHeading -= 360;
         }
 
-        double headingError = universal_target_heading - currentIMUValue;
-        double headingCorrection = calcPID(headingError);
+        double headingError = targetHeading - currentIMUValue;
+        if (headingError > 180) headingError -= 360;
+        if (headingError < -180) headingError += 360;
+        if (fabs(headingError) < 30) {
+            headingTotalError += headingError;
+        }
+        if (headingTotalError > HCMAXI) headingTotalError = HCMAXI;
+        if (headingTotalError < -HCMAXI) headingTotalError = -HCMAXI;
+        double headingDerivative = headingError - headingPrevError;
+        double headingCorrection = headingError * HCKP +
+                                   headingTotalError * HCKI +
+                                   headingDerivative * HCKD;
+        headingPrevError = headingError;
 
         // =====================
         // DRIVE PID
         // =====================
-        double error = pidTarget - currentValue;
-
         if (triggerDist != -1 && abs(error) <= triggerDist) {
             
             Lift.move(triggerSpeed);
@@ -457,20 +495,32 @@ void drivePID_distance(int desiredValue, int maxSpeed, int timeout, int wallDist
         // =====================
         // WALL FOLLOWING PID
         // =====================
-        double wallDistance = (sensorSide == 0) ? distanceSensorL.get() : distanceSensorR.get();
-
-        double wallError = wallDistanceTarget - wallDistance;
-        double wallDerivative = wallError - wallPrevError;
-        wallTotalError += wallError;
-
-        double wallCorrection = wallError * wallKP + wallDerivative * wallKD + wallTotalError * wallKI;
-        if (wallCorrection > 50) wallCorrection = 50;
-        if (wallCorrection < -50) wallCorrection = -50;
-        wallPrevError = wallError;
-
         // =====================
         // WALL ENABLE/DISABLE
         bool wallEnabled = (wallDistanceTarget != -1);
+        double wallCorrection = 0;
+        std::int32_t wallDistance = 0;
+        double wallError = 0;
+        if (wallEnabled) {
+            wallDistance = (sensorSide == 0) ? distanceSensorL.get() : distanceSensorR.get();
+            if (wallDistance <= 0 || wallDistance > 2000) {
+                chasBrake();
+                con.clear();
+                con.print(0, 0, "DISTANCE SENSOR ERROR");
+                con.print(1, 0, "Check side sensor");
+                return;
+            }
+
+            wallError = wallDistanceTarget - wallDistance;
+            if (fabs(wallError) > 5) {
+                // Proportional-only steering avoids sharp turns from noisy distance derivatives.
+                wallCorrection = wallError * 0.45;
+            }
+            double maxWallCorrection = fabs(speed) * 0.3;
+            if (maxWallCorrection > 35) maxWallCorrection = 35;
+            if (wallCorrection > maxWallCorrection) wallCorrection = maxWallCorrection;
+            if (wallCorrection < -maxWallCorrection) wallCorrection = -maxWallCorrection;
+        }
 
         // =====================
         // COMBINE CORRECTIONS
@@ -484,8 +534,18 @@ void drivePID_distance(int desiredValue, int maxSpeed, int timeout, int wallDist
                 totalCorrection -= directedWallCorrection;
             }
         }
+        double maxCorrection = fabs(speed) * 0.4;
+        if (maxCorrection > 40) maxCorrection = 40;
+        if (totalCorrection > maxCorrection) totalCorrection = maxCorrection;
+        if (totalCorrection < -maxCorrection) totalCorrection = -maxCorrection;
 
-        chasMove(speed + totalCorrection, speed - totalCorrection);
+        double leftSpeed = speed + totalCorrection;
+        double rightSpeed = speed - totalCorrection;
+        if (leftSpeed > 127) leftSpeed = 127;
+        if (leftSpeed < -127) leftSpeed = -127;
+        if (rightSpeed > 127) rightSpeed = 127;
+        if (rightSpeed < -127) rightSpeed = -127;
+        chasMove(leftSpeed, rightSpeed);
 
         prevError = error;
 
@@ -513,7 +573,8 @@ void drivePID_distance(int desiredValue, int maxSpeed, int timeout, int wallDist
         } else if (time % 100 == 0 && time % 150 != 0){
             con.print(1, 0, "IMU: %.2f          ", imu.get_heading());
         } else if (time % 150 == 0){
-            con.print(2, 0, "distance: %d            ", distanceSensorL.get());
+            con.print(2, 0, "%s: %d mm          ",
+                      sensorSide == 0 ? "LEFT" : "RIGHT", wallDistance);
         }
 
         delay(10);
@@ -573,8 +634,8 @@ void drivePID_distancefront(int desiredValue, int maxSpeed, int timeout, int wal
             enableDrivePID = false;
         }
 
-        double chassisLeftPos  = (LF.get_position() + LM.get_position() + LB.get_position()) / 3.0;
-        double chassisRightPos = (RF.get_position() + RM.get_position() + RB.get_position()) / 3.0;
+        double chassisLeftPos  = (LF.get_position() + LB.get_position()) / 2.0;
+        double chassisRightPos = (RF.get_position() + RB.get_position()) / 2.0;
 
         double currentValue = (chassisRightPos + chassisLeftPos) / 2.0;
         double pos = fabs(currentValue);
@@ -752,8 +813,8 @@ void drivePID_distanceback(int desiredValue, int maxSpeed, int timeout, int wall
             enableDrivePID = false;
         }
 
-        double chassisLeftPos  = (LF.get_position() + LM.get_position() + LB.get_position()) / 3.0;
-        double chassisRightPos = (RF.get_position() + RM.get_position() + RB.get_position()) / 3.0;
+        double chassisLeftPos  = (LF.get_position() + LB.get_position()) / 2.0;
+        double chassisRightPos = (RF.get_position() + RB.get_position()) / 2.0;
 
         double currentValue = (chassisRightPos + chassisLeftPos) / 2.0;
         double pos = fabs(currentValue);
@@ -1060,8 +1121,8 @@ void driveArcL(double theta, double radius, int timeout, int speed, int chainVal
     {
         if (time > timeout) enableArcPID = false;
 
-        double encoderAvgL = (LF.get_position() + LM.get_position() + LB.get_position()) / 3.0;
-        double encoderAvgR = (RF.get_position() + RM.get_position() + RB.get_position()) / 3.0;
+        double encoderAvgL = (LF.get_position() + LB.get_position()) / 2.0;
+        double encoderAvgR = (RF.get_position() + RB.get_position()) / 2.0;
 
         double right_error = rtargetPID - encoderAvgR;
         double left_error  = ltargetPID - encoderAvgL;
@@ -1106,7 +1167,9 @@ void driveArcL(double theta, double radius, int timeout, int speed, int chainVal
 
         // exit conditions
         if (chainValue != 0) {
-            if (encoderAvgR >= rtarget) enableArcPID = false;
+            if (theta > 0 ? encoderAvgR >= rtarget : encoderAvgR <= rtarget) {
+                enableArcPID = false;
+            }
         } else {
             if ((fabs(left_error) < errorThreshold) && (fabs(right_error) < errorThreshold)) count++;
             if (count > settleCount) enableArcPID = false;
@@ -1181,8 +1244,8 @@ void driveArcR(double theta, double radius, int timeout, int speed, int chainVal
     {
         if (time > timeout) enableArcPID = false;
 
-        double encoderAvgL = (LF.get_position() + LM.get_position() + LB.get_position()) / 3.0;
-        double encoderAvgR = (RF.get_position() + RM.get_position() + RB.get_position()) / 3.0;
+        double encoderAvgL = (LF.get_position() + LB.get_position()) / 2.0;
+        double encoderAvgR = (RF.get_position() + RB.get_position()) / 2.0;
 
         double right_error = rtargetPID - encoderAvgR;
         double left_error  = ltargetPID - encoderAvgL;
@@ -1227,7 +1290,9 @@ void driveArcR(double theta, double radius, int timeout, int speed, int chainVal
 
         // exit conditions
         if (chainValue != 0) {
-            if (encoderAvgL >= ltarget) enableArcPID = false;
+            if (theta > 0 ? encoderAvgL >= ltarget : encoderAvgL <= ltarget) {
+                enableArcPID = false;
+            }
         } else {
             if ((fabs(left_error) < errorThreshold) && (fabs(right_error) < errorThreshold)) count++;
             if (count > settleCount) enableArcPID = false;
@@ -1310,5 +1375,3 @@ void liftPID(int desiredValue, int maxSpeed, int timeout,
 
     Lift.move(0);
 }
-
-

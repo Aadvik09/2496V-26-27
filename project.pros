@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "4 ball (left)",
+    "project_name": "test distance",
     "target": "v5",
     "templates": {
       "kernel": {
@@ -308,9 +308,9 @@
       }
     },
     "upload_options": {
-      "description": "Odometry ",
-      "icon": "planet",
-      "slot": 2
+      "description": "disatnce",
+      "icon": "X",
+      "slot": 4
     }
   }
 }

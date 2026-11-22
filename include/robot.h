@@ -22,13 +22,12 @@ extern pros::Motor LF;
 extern pros::Motor LB;
 extern pros::Motor RF;
 extern pros::Motor RB;
-extern pros::Motor RM;
-extern pros::Motor LM;
 
 
 // intake/mechanism motors
 extern pros::Motor intake;
-extern pros::Motor_Group Lift;
+extern pros::Motor_Group lift;
+extern pros::Motor_Group& Lift;
 
 void configure_lift_brake_mode();
 
@@ -36,7 +35,8 @@ void configure_lift_brake_mode();
 extern pros::Imu imu;
 
 // pneumatics
-extern pros::ADIDigitalOut claw;
+extern pros::ADIDigitalOut& claw;
+extern pros::ADIDigitalOut scraper;
 extern pros::ADIDigitalOut clawTilt;
 extern pros::ADIDigitalOut Iain_kim;
  
