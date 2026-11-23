@@ -1,4 +1,4 @@
-﻿#ifndef ROBOTH
+#ifndef ROBOTH
 #define ROBOTH
 
 #include "main.h"
@@ -24,9 +24,10 @@ extern pros::Motor RF;
 extern pros::Motor RB;
 
 
-// intake/mechanism motors
-extern pros::Motor intake;
+// claw/mechanism motors
+extern pros::Motor claw;
 extern pros::Motor_Group lift;
+extern pros::Motor_Group toggles;
 extern pros::Motor_Group& Lift;
 
 void configure_lift_brake_mode();
@@ -35,8 +36,6 @@ void configure_lift_brake_mode();
 extern pros::Imu imu;
 
 // pneumatics
-extern pros::ADIDigitalOut& claw;
-extern pros::ADIDigitalOut scraper;
 extern pros::ADIDigitalOut clawTilt;
 extern pros::ADIDigitalOut Iain_kim;
  

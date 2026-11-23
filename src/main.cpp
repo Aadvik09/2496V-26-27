@@ -145,7 +145,6 @@ void opcontrol() {
   bool tankToggle = false;
 
   //robot toggles
-  bool clawToggle = false;
   bool liftPIDToggle = false;
   bool wingToggle = false;
   bool clawTiltToggle = false;
@@ -162,39 +161,50 @@ void opcontrol() {
 
   while (true) {
 
-    if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_X)) {
-        clawToggle = !clawToggle;
-      claw.set_value(clawToggle);
-    }
-
-    if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_DOWN)) {
-      wingToggle = !wingToggle;
-      Iain_kim.set_value(wingToggle);
-    }
-
-    if (con.get_digital_new_press(E_CONTROLLER_DIGITAL_B)) {
-      clawTiltToggle = !clawTiltToggle;
-      clawTilt.set_value(clawTiltToggle);
-    }
+    
     // Use the existing lift PID as a target-based controller.
     // Any manual lift input turns the PID off immediately.
 
 
-    //intake controls 
+    //claw controls 
     if (con.get_digital(E_CONTROLLER_DIGITAL_R1)) {//score mode
 			lift.move(127);
-      //intake.tare_position();
+      //claw.tare_position();
 
 		} 
     else if(con.get_digital(E_CONTROLLER_DIGITAL_R2)){//store mode
       lift.move(-127);
-      //intake.tare_position();
+      //claw.tare_position();
     }
 
     else {
       lift.move(0);
     }
+    
 
+    //toggle controls
+    if (con.get_digital(E_CONTROLLER_DIGITAL_DOWN)) {
+      toggles.move(127);
+    }
+    else {
+      toggles.move(0);
+    }
+
+    //claw controls 
+    if (con.get_digital(E_CONTROLLER_DIGITAL_L1)) {//score mode
+			claw.move(127);
+      //claw.tare_position();
+
+		} 
+
+    else if (con.get_digital(E_CONTROLLER_DIGITAL_L2)) {//score mode
+			claw.move(-127);
+      //claw.tare_position();
+
+		} 
+    else {
+      claw.move(0);
+    }
 
 
     pros::c::imu_accel_s_t accel = imu.get_accel();
@@ -266,17 +276,15 @@ void opcontrol() {
 
 
 
-    double chasstempC = ((RF.get_temperature() + RB.get_temperature() + LF.get_temperature() + LB.get_temperature()) / 4);
-    double intaketempc = intake.get_temperature();
+    double chassisTempC =
+        (RF.get_temperature() + RB.get_temperature() +
+         LF.get_temperature() + LB.get_temperature()) / 4.0;
 
       if (time % 101 == 0) {
         con.print(0, 0, "AUTON: %s           ", autstr);
     }
-    if (time % 103 == 0) {
-        con.print(1, 0, "imu: %.2f           ", imu.get_rotation());
-    } 
     if (time % 107 == 0) {
-        con.print(2, 0, "C:%i int:%i         ", int(chasstempC), int(intaketempc)); 
+        con.print(1, 0, "Chassis: %d C       ", static_cast<int>(chassisTempC));
     }
     time += 1;
     delay(1);

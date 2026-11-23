@@ -10,13 +10,16 @@
 #define RB_PORT 1
 // all ABOVE MOTORS NEED TO BE CHANGED FOR 2496S CHASSIS ----these things arent reversed make sure they actually run----
 #define IMU_PORT 20
-#define intake_PORT 15
+#define claw_PORT 8
 #define lift_PORT1 7
 #define lift_PORT2 9
 #define Distance_PORTL 3 //none for now
 #define Distance_PORTR 2
 // Front/back distance sensor ports (set to unused ports by default)
 
+//other sub
+#define Toggle_PORT1 5
+#define Toggle_PORT2 13
 
 // rotation sensors
 pros::Distance distanceSensorL(Distance_PORTL);
@@ -30,10 +33,13 @@ pros::Motor LB(LB_PORT, pros::E_MOTOR_GEARSET_06, false);
 pros::Motor RF(RF_PORT, pros::E_MOTOR_GEARSET_06, false);
 pros::Motor RB(RB_PORT, pros::E_MOTOR_GEARSET_06, true);
 
-// intake motors
+// claw motors
 pros::Motor_Group lift({lift_PORT1, lift_PORT2});
 pros::Motor_Group& Lift = lift;
-pros::Motor intake(intake_PORT, pros::E_MOTOR_GEARSET_06, false);
+pros::Motor claw(claw_PORT, pros::E_MOTOR_GEARSET_06, false);
+pros::Motor toggle1(Toggle_PORT1, pros::E_MOTOR_GEARSET_06, false);
+pros::Motor toggle2(Toggle_PORT2, pros::E_MOTOR_GEARSET_06, true);
+pros::Motor_Group toggles({toggle1, toggle2});
 
 void configure_lift_brake_mode() {
     pros::c::motor_set_brake_mode(lift_PORT1, pros::E_MOTOR_BRAKE_HOLD);
@@ -41,8 +47,6 @@ void configure_lift_brake_mode() {
 }
 
 // pneumatics
-pros::ADIDigitalOut scraper('A');
-pros::ADIDigitalOut& claw = scraper;
 pros::ADIDigitalOut clawTilt('C');
 pros::ADIDigitalOut Iain_kim('B');
 
